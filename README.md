@@ -1,3 +1,3 @@
-*A django application that manages and organizes inventory*
+*A django application that manages inventory*
 
 # DjangoBox
