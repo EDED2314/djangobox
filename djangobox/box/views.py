@@ -9,9 +9,9 @@ def index(request):
     return HttpResponse("Hello, world. You're at the polls index.")
 
 
-class RoomListView(generic.ListView):
+class LocationListView(generic.ListView):
     model = Location
 
 
-class RoomDetailView(generic.DetailView):
+class LocationView(generic.DetailView):
     model = Location

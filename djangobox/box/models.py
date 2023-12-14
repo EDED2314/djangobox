@@ -26,3 +26,22 @@ class Location(models.Model):
     def get_absolute_url(self):
         """Returns the URL to access a particular instance of Location."""
         return reverse("location-detail", args=[str(self.id)])
+
+
+class Box(models.Model):
+    """DjangoBox's Storage Model
+
+    name -- the name of the storage unit
+    location -- the location in which it is stored
+    boxes -- storage units within this box.
+    """
+
+    name = models.CharField(max_length=200)
+    location = models.ForeignKey(Location, on_delete=models.DO_NOTHING)
+    boxes = models.ManyToManyField("Box", related_name="subboxes")
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse("box-detail", args=[str(self.id)])
