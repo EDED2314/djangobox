@@ -4,6 +4,14 @@ from django.core.validators import MaxValueValidator, MinValueValidator
 
 from django.urls import reverse
 
+from shortuuidfield import ShortUUIDField
+
+import os
+import barcode
+from io import BytesIO
+from django.core.files import File
+from barcode.writer import ImageWriter
+
 
 class User(AbstractUser):
     user_id = models.PositiveIntegerField(
@@ -38,15 +46,14 @@ class Location(models.Model):
 class Box(models.Model):
     """Storage Model
 
-    name -- the name of the storage unit \n
-    location -- the location in which it is stored \n
-    boxes -- storage units within this box. \n
-
-    To locate subboxes of a box:
+    To access subboxes of a box:
     `sub_boxes = my_box.subboxes.all()`
 
-    To locate boxes of a subbox:
+    To access boxes of a subbox:
     `boxes = sub_box.boxes.all()`
+
+    To access the items in this box:
+    `item_portions_in_this_box = box.items.all()`
     """
 
     name = models.CharField(max_length=200)
@@ -69,22 +76,45 @@ class Item(models.Model):
     `portions = item.portions.all()`
     """
 
-    # genearl fields
     name = models.CharField(max_length=200)
     description = models.TextField(default="", blank=True)
+    uuid = ShortUUIDField()
 
-    # optional fields
     sku = models.CharField(max_length=100, default="", blank=True)
     mpn = models.CharField(max_length=100, default="", blank=True)
     upc = models.IntegerField(blank=True, null=True)
 
-    # relations
-    unit = models.ForeignKey("Unit", related_name="taggedItems")
+    unit = models.ForeignKey(
+        "Unit", on_delete=models.SET_NULL, related_name="taggedItems", null=True
+    )
+
+    def __str__(self):
+        return self.name
+
+    def save(self, *args, **kwargs):
+        """ "overrides the save function to add a barcode generation feature"""
+
+        path = os.path.join("media", "barcodes", f"{self.uuid}.png")
+        if not (os.path.isfile(path)):
+            barclass = barcode.get_barcode_class("Code128")
+            code = barclass(f"{self.uuid}", writer=ImageWriter())
+            buffer = BytesIO()
+            code.write(buffer)
+            self.barcode.save(f"{self.uuid}.png", File(buffer), save=False)
+
+        return super().save(*args, **kwargs)
 
 
 class ItemPortion(models.Model):
-    item = models.ForeignKey(Item, related_name="portions")
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
     qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+
+    box = models.ForeignKey(
+        Box, on_delete=models.SET_NULL, related_name="items", null=True
+    )
+
+    def __str__(self):
+        return f"{self.item.name}_{self.box.name}"
 
 
 class Unit(models.Model):
