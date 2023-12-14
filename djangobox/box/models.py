@@ -104,6 +104,9 @@ class Item(models.Model):
 
         return super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("item-detail", args=[str(self.id)])
+
 
 class ItemPortion(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
