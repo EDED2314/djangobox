@@ -7,8 +7,13 @@ $ cd djangobox
 ~~Some code to create and activate venv~~
 (venv) $ pip install -r requirements.txt
 ```
+
 # Running
 ```bash
 $ cd djangobox
 $ python manage.py runserver
 ```
+
+# Important Notes
+
+# Development Notes/Todos
