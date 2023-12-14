@@ -1,4 +1,4 @@
-*A small-scale, hobbiest-driven jango application that manages makerspace inventory*
+*A small-scale, hobbiest-driven django application that manages makerspace inventory*
 
 # Installation
 ```bash
