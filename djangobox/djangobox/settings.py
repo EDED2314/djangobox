@@ -115,6 +115,7 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
+BARCODE_RELATIVE = "barcodes"
 BARCODE_ROOT = os.path.join(MEDIA_ROOT, "barcodes")
 
 if not os.path.exists(MEDIA_ROOT):

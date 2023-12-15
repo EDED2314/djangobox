@@ -117,9 +117,9 @@ class ItemPortion(models.Model):
     )
 
     barcode = models.ImageField(
-        upload_to=settings.BARCODE_ROOT,
+        upload_to=settings.BARCODE_RELATIVE,
         blank=True,
-        default=os.path.join(settings.BARCODE_ROOT, "barcode.png"),
+        default=os.path.join(settings.BARCODE_ROOT, "notbarcode.png"),
     )
 
     def __str__(self):
@@ -131,16 +131,15 @@ class ItemPortion(models.Model):
         super().save(*args, **kwargs)
 
         try:
-            file_name = f"item-{self.item.name}_pk{self.pk}.png"
+            file_name = f"item-{self.item.name.replace(' ', '_')}_pk{self.pk}.png"
             full_path = os.path.join(settings.BARCODE_ROOT, file_name)
 
-            # Check if the file already exists before saving
             if not (os.path.isfile(full_path)):
                 barclass = barcode.get_barcode_class("Code128")
                 code = barclass(f"{self.uuid}", writer=ImageWriter())
                 buffer = BytesIO()
                 code.write(buffer)
-                self.barcode.save(file_name, File(buffer), save=False)
+                self.barcode.save(file_name, File(buffer), save=True)
 
         except BarcodeError as e:
             logger = logging.getLogger(__name__)
@@ -153,7 +152,7 @@ class ItemPortion(models.Model):
     def delete(self):
         """overrides the save function to add a barcode deletion"""
         path = self.barcode.path
-        if os.path.isfile(path):
+        if os.path.isfile(path) and "notbarcode" not in path:
             os.remove(path)
 
         super().delete()
