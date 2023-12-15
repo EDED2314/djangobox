@@ -1,3 +1,5 @@
+import logging
+
 from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
@@ -13,6 +15,7 @@ import barcode
 from io import BytesIO
 from django.core.files import File
 from barcode.writer import ImageWriter
+from barcode.errors import BarcodeError
 
 
 class User(AbstractUser):
@@ -98,17 +101,24 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         """overrides the save function to add a barcode generation feature"""
 
-        media_root = settings.MEDIA_ROOT
-        relative_path = os.path.join("barcodes", f"{self.uuid}.png")
-        full_path = os.path.join(media_root, relative_path)
+        try:
+            media_root = settings.MEDIA_ROOT
+            relative_path = os.path.join("barcodes", f"{self.uuid}.png")
+            full_path = os.path.join(media_root, relative_path)
 
-        # Check if the file already exists before saving
-        if not (os.path.isfile(full_path)):
-            barclass = barcode.get_barcode_class("Code128")
-            code = barclass(f"{self.uuid}", writer=ImageWriter())
-            buffer = BytesIO()
-            code.write(buffer)
-            self.barcode.save(relative_path, File(buffer), save=False)
+            # Check if the file already exists before saving
+            if not (os.path.isfile(full_path)):
+                barclass = barcode.get_barcode_class("Code128")
+                code = barclass(f"{self.uuid}", writer=ImageWriter())
+                buffer = BytesIO()
+                code.write(buffer)
+                self.barcode.save(relative_path, File(buffer), save=False)
+
+        except BarcodeError as e:
+            logger = logging.getLogger(__name__)
+            logger.error(
+                f"Barcode generation failed for Item {self.uuid}, {self.name}: {e}"
+            )
 
         return super().save(*args, **kwargs)
 

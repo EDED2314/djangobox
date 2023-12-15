@@ -113,3 +113,26 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 # Media settings
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
+
+# Logging configuration
+LOG_FILE_PATH = os.path.join(BASE_DIR, "logs")
+LOGGING = {
+    "version": 1,
+    "disable_existing_loggers": False,
+    "handlers": {
+        "file": {
+            "level": "ERROR",
+            "class": "logging.FileHandler",
+            "filename": str(
+                os.path.join(LOG_FILE_PATH, "error.log")
+            ),  # Change this to the desired log file path
+        },
+    },
+    "loggers": {
+        "django": {
+            "handlers": ["file"],
+            "level": "ERROR",
+            "propagate": True,
+        },
+    },
+}
