@@ -1,6 +1,6 @@
 # Django Box - in development
 *A small-scale, hobbiest-driven django application that manages makerspace inventory*
-![tests](https://github.com/github/docs/actions/workflows/django.yml/badge.svg)
+![tests](https://github.com/EDED2314/djangobox/actions/workflows/django.yml/badge.svg)
 
 # Features 🚀
 1. Inventory management: So far, this is through the admin panel, a UI will be coming shortly
