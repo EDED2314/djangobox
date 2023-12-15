@@ -115,7 +115,18 @@ MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
 # Logging configuration
-LOG_FILE_PATH = os.path.join(BASE_DIR, "logs")
+LOG_DIR = os.path.join(BASE_DIR, "logs")
+LOG_FILE = "/box.log"
+LOG_PATH = LOG_DIR + LOG_FILE
+
+if not os.path.exists(LOG_DIR):
+    os.mkdir(LOG_DIR)
+
+if not os.path.exists(LOG_PATH):
+    f = open(LOG_PATH, "a").close()
+else:
+    f = open(LOG_PATH, "w").close()
+
 LOGGING = {
     "version": 1,
     "disable_existing_loggers": False,
@@ -123,9 +134,7 @@ LOGGING = {
         "file": {
             "level": "ERROR",
             "class": "logging.FileHandler",
-            "filename": str(
-                os.path.join(LOG_FILE_PATH, "error.log")
-            ),  # Change this to the desired log file path
+            "filename": LOG_PATH,
         },
     },
     "loggers": {

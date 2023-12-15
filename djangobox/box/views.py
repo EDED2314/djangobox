@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import generic
 
 from django.http import HttpResponse
-from models import Location, Box, Item
+from .models import Location, Box, Item
 
 
 def index(request):
@@ -25,7 +25,7 @@ class BoxView(generic.DetailView):
     model = Box
 
 
-class ItemView(generic.ListView):
+class ItemListView(generic.ListView):
     model = Item
 
 
