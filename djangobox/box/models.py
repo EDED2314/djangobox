@@ -86,6 +86,11 @@ class Item(models.Model):
     name = models.CharField(max_length=200)
     description = models.TextField(default="", blank=True)
     uuid = ShortUUIDField()
+    barcode = models.ImageField(
+        upload_to=settings.BARCODE_ROOT,
+        blank=True,
+        default=os.path.join(settings.BARCODE_ROOT, "barcode.png"),
+    )
 
     sku = models.CharField(max_length=100, default="", blank=True)
     mpn = models.CharField(max_length=100, default="", blank=True)
@@ -101,10 +106,11 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         """overrides the save function to add a barcode generation feature"""
 
+        super().save(*args, **kwargs)
+
         try:
-            media_root = settings.MEDIA_ROOT
-            relative_path = os.path.join("barcodes", f"{self.uuid}.png")
-            full_path = os.path.join(media_root, relative_path)
+            file_name = f"{self.uuid}_{self.name}.png"
+            full_path = os.path.join(settings.BARCODE_ROOT, file_name)
 
             # Check if the file already exists before saving
             if not (os.path.isfile(full_path)):
@@ -112,7 +118,7 @@ class Item(models.Model):
                 code = barclass(f"{self.uuid}", writer=ImageWriter())
                 buffer = BytesIO()
                 code.write(buffer)
-                self.barcode.save(relative_path, File(buffer), save=False)
+                self.barcode.save(file_name, File(buffer), save=False)
 
         except BarcodeError as e:
             logger = logging.getLogger(__name__)
@@ -120,7 +126,7 @@ class Item(models.Model):
                 f"Barcode generation failed for Item {self.uuid}, {self.name}: {e}"
             )
 
-        return super().save(*args, **kwargs)
+        return self
 
     def get_absolute_url(self):
         return reverse("item-detail", args=[str(self.id)])

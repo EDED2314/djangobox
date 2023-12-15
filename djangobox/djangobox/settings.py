@@ -114,13 +114,21 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 MEDIA_URL = "/media/"
 
-# Logging configuration
-LOG_DIR = os.path.join(BASE_DIR, "logs")
-LOG_FILE = "/box.log"
-LOG_PATH = LOG_DIR + LOG_FILE
+BARCODE_ROOT = os.path.join(MEDIA_ROOT, "barcodes")
 
-if not os.path.exists(LOG_DIR):
-    os.mkdir(LOG_DIR)
+if not os.path.exists(MEDIA_ROOT):
+    os.mkdir(MEDIA_ROOT)
+
+if not os.path.exists(BARCODE_ROOT):
+    os.mkdir(MEDIA_ROOT)
+
+# Logging configuration
+LOG_ROOT = os.path.join(BASE_DIR, "logs")
+LOG_FILE = "/box.log"
+LOG_PATH = LOG_ROOT + LOG_FILE
+
+if not os.path.exists(LOG_ROOT):
+    os.mkdir(LOG_ROOT)
 
 if not os.path.exists(LOG_PATH):
     f = open(LOG_PATH, "a").close()

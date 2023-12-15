@@ -1,5 +1,5 @@
 from django.test import TestCase
-from models import Location, Box, Item, ItemPortion, Unit
+from box.models import Location, Box, Item, ItemPortion, Unit
 
 
 class ModelsTestCase(TestCase):
