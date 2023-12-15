@@ -18,7 +18,7 @@ $ git clone https://github.com/EDED2314/djangobox.git
 $ pip install -r requirements.txt
 $ cd djangobox
 $ python manage.py migrate
-$ python manage.py createsuperuser # Create your initial user
+$ python manage.py createsuperuser
 $ python manage.py runserver
 ```
 
