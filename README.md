@@ -1,4 +1,4 @@
-# Django Box - in development
+# Django Box 📦 - in development
 *A small-scale, hobbiest-driven django application that manages makerspace inventory*
 
 ![tests](https://github.com/EDED2314/djangobox/actions/workflows/django.yml/badge.svg)
