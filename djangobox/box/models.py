@@ -67,7 +67,7 @@ class Box(models.Model):
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, related_name="boxes"
     )
-    boxes = models.ManyToManyField("Box", related_name="subboxes")
+    boxes = models.ManyToManyField("Box", related_name="subboxes", blank=True)
 
     def __str__(self):
         return self.name
@@ -85,7 +85,7 @@ class Item(models.Model):
 
     name = models.CharField(max_length=200)
     description = models.TextField(default="", blank=True)
-    uuid = ShortUUIDField()
+
     barcode = models.ImageField(
         upload_to=settings.BARCODE_ROOT,
         blank=True,
@@ -97,19 +97,41 @@ class Item(models.Model):
     upc = models.IntegerField(blank=True, null=True)
 
     unit = models.ForeignKey(
-        "Unit", on_delete=models.SET_NULL, related_name="tagged_items", null=True
+        "Unit",
+        on_delete=models.SET_NULL,
+        related_name="tagged_items",
+        blank=True,
+        null=True,
     )
 
     def __str__(self):
         return self.name
 
+    def get_absolute_url(self):
+        return reverse("item-detail", args=[str(self.id)])
+
+
+class ItemPortion(models.Model):
+    """A portion/physical manifestation of an item."""
+
+    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
+    qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
+    uuid = ShortUUIDField()
+
+    box = models.ForeignKey(
+        Box, on_delete=models.SET_NULL, related_name="items", null=True
+    )
+
+    def __str__(self):
+        return f"Item:'{self.item.name}' in Box:'{self.box.name}'"
+
     def save(self, *args, **kwargs):
-        """overrides the save function to add a barcode generation feature"""
+        """overrides the save function to add a barcode generation"""
 
         super().save(*args, **kwargs)
 
         try:
-            file_name = f"{self.uuid}_{self.name}.png"
+            file_name = f"item-{self.item.name}_pk{self.pk}.png"
             full_path = os.path.join(settings.BARCODE_ROOT, file_name)
 
             # Check if the file already exists before saving
@@ -118,32 +140,25 @@ class Item(models.Model):
                 code = barclass(f"{self.uuid}", writer=ImageWriter())
                 buffer = BytesIO()
                 code.write(buffer)
-                self.barcode.save(file_name, File(buffer), save=False)
+                self.item.barcode.save(file_name, File(buffer), save=False)
 
         except BarcodeError as e:
             logger = logging.getLogger(__name__)
             logger.error(
-                f"Barcode generation failed for Item {self.uuid}, {self.name}: {e}"
+                f"[ItemPortion uuid:{self.pk}]| Barcode generation failed for Item {self.item.name}: {e}"
             )
 
         return self
 
-    def get_absolute_url(self):
-        return reverse("item-detail", args=[str(self.id)])
+    def delete(self):
+        """overrides the save function to add a barcode deletion"""
+        file_name = f"item-{self.item.name}_pk{self.pk}.png"
+        full_path = os.path.join(settings.BARCODE_ROOT, file_name)
 
+        if os.path.isfile(full_path):
+            os.remove(full_path)
 
-class ItemPortion(models.Model):
-    """A portion of an item."""
-
-    item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
-    qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-
-    box = models.ForeignKey(
-        Box, on_delete=models.SET_NULL, related_name="items", null=True
-    )
-
-    def __str__(self):
-        return f"{self.item.name}<>{self.box.name}"
+        super().delete()
 
 
 class Unit(models.Model):

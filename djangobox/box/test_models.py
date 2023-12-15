@@ -23,7 +23,7 @@ class ModelsTestCase(TestCase):
         item_portion = ItemPortion.objects.create(
             item=Item.objects.create(name="Test Item"), box=self.box
         )
-        self.assertEqual(str(item_portion), "Test Item<>Test Box")
+        self.assertEqual(str(item_portion), "Item:'Test Item' in Box:'Test Box'")
 
     def test_unit_str(self):
         self.assertEqual(str(self.unit), "Test Unit")
