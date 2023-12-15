@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -8,14 +9,17 @@ from shortuuidfield import ShortUUIDField
 
 import os
 import barcode
+
 from io import BytesIO
 from django.core.files import File
 from barcode.writer import ImageWriter
 
 
 class User(AbstractUser):
+    """Custom user model with an additional user_id field."""
+
     user_id = models.PositiveIntegerField(
-        default=00000, validators=[MaxValueValidator(999999)], unique=True
+        default="00000", validators=[MaxValueValidator(999999)], unique=True
     )
 
     def __str__(self):
@@ -85,22 +89,26 @@ class Item(models.Model):
     upc = models.IntegerField(blank=True, null=True)
 
     unit = models.ForeignKey(
-        "Unit", on_delete=models.SET_NULL, related_name="taggedItems", null=True
+        "Unit", on_delete=models.SET_NULL, related_name="tagged_items", null=True
     )
 
     def __str__(self):
         return self.name
 
     def save(self, *args, **kwargs):
-        """ "overrides the save function to add a barcode generation feature"""
+        """overrides the save function to add a barcode generation feature"""
 
-        path = os.path.join("media", "barcodes", f"{self.uuid}.png")
-        if not (os.path.isfile(path)):
+        media_root = settings.MEDIA_ROOT
+        relative_path = os.path.join("barcodes", f"{self.uuid}.png")
+        full_path = os.path.join(media_root, relative_path)
+
+        # Check if the file already exists before saving
+        if not (os.path.isfile(full_path)):
             barclass = barcode.get_barcode_class("Code128")
             code = barclass(f"{self.uuid}", writer=ImageWriter())
             buffer = BytesIO()
             code.write(buffer)
-            self.barcode.save(f"{self.uuid}.png", File(buffer), save=False)
+            self.barcode.save(relative_path, File(buffer), save=False)
 
         return super().save(*args, **kwargs)
 
@@ -109,6 +117,8 @@ class Item(models.Model):
 
 
 class ItemPortion(models.Model):
+    """A portion of an item."""
+
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
     qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
 
@@ -117,14 +127,14 @@ class ItemPortion(models.Model):
     )
 
     def __str__(self):
-        return f"{self.item.name}_{self.box.name}"
+        return f"{self.item.name}<>{self.box.name}"
 
 
 class Unit(models.Model):
     """A unit attributed to item it references e.g. bit, a drill bit
 
     To access the items that have this instance as a unit:
-    `items = unit.taggedItems.all()`
+    `items = unit.tagged_items.all()`
     """
 
     unit_name = models.CharField(max_length=30)
