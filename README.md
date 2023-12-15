@@ -5,7 +5,9 @@
 
 # Features 🚀
 1. Inventory management: So far, this is through the admin panel, a UI will be coming shortly
+
 2. Modular storage: In many github repos that offer templates in inventory management, they do not address the variability in the storage structure that can exist in a makerspace. What DjangoBox does is creating a tree out of every storage unit and item so that a modular design is achieved.
+
 3. Easy set up + Any platform: With the help of python, platform support is extremely easy
 
 ## Setup👀
