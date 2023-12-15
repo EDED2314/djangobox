@@ -15,11 +15,11 @@
 So far, this project runs on python 3.10.
 ```bash
 $ git clone https://github.com/EDED2314/djangobox.git
+$ pip install -r requirements.txt
 $ cd djangobox
-(venv) $ pip install -r requirements.txt
-(venv) $ python manage.py migrate
-(venv) $ python manage.py createsuperuser # Create your initial user
-(venv) $ python manage.py runserver
+$ python manage.py migrate
+$ python manage.py createsuperuser # Create your initial user
+$ python manage.py runserver
 ```
 
 ## Contributing 🏗️
