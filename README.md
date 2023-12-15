@@ -17,9 +17,9 @@ So far, this project runs on python 3.10.
 $ git clone https://github.com/EDED2314/djangobox.git
 $ cd djangobox
 (venv) $ pip install -r requirements.txt
-$ python manage.py migrate
-$ python manage.py createsuperuser # Create your initial user
-$ python manage.py runserver
+(venv) $ python manage.py migrate
+(venv) $ python manage.py createsuperuser # Create your initial user
+(venv) $ python manage.py runserver
 ```
 
 ## Contributing 🏗️
