@@ -172,11 +172,11 @@ class Unit(models.Model):
         return self.unit_name
 
 
-class Borrow(models.Model):
-    qty = models.IntegerField(validators=[MinValueValidator(1)])
-    timestamp_check_out = models.DateTimeField()
-    timestamp_check_in = models.DateTimeField(null=True, blank=True)
-    item = models.ForeignKey(ItemPortion, on_delete=models.CASCADE)
+#class Borrow(models.Model):
+    #qty = models.IntegerField(validators=[MinValueValidator(1)])
+    #timestamp_check_out = models.DateTimeField()
+    #timestamp_check_in = models.DateTimeField(null=True, blank=True)
+    #item = models.ForeignKey(ItemPortion, on_delete=models.CASCADE)
 
-    class Meta:
-        ordering = ["timestamp_check_out"]
+    #class Meta:
+        #ordering = ["timestamp_check_out"]
