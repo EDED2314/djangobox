@@ -51,7 +51,7 @@ class Location(models.Model):
 
 
 class Box(models.Model):
-    """Storage Model
+    """Storage model
 
     To access subboxes of a box:
     `sub_boxes = my_box.subboxes.all()`
@@ -77,7 +77,7 @@ class Box(models.Model):
 
 
 class Item(models.Model):
-    """A item
+    """An item model
 
     To access the `ItemPortion` list of this item:
     `portions = item.portions.all()`
@@ -170,3 +170,13 @@ class Unit(models.Model):
 
     def __str__(self):
         return self.unit_name
+
+
+class Borrow(models.Model):
+    qty = models.IntegerField(validators=[MinValueValidator(1)])
+    timestamp_check_out = models.DateTimeField()
+    timestamp_check_in = models.DateTimeField(null=True, blank=True)
+    item = models.ForeignKey(ItemPortion, on_delete=models.CASCADE)
+
+    class Meta:
+        ordering = ["timestamp_check_out"]
