@@ -158,8 +158,43 @@ class ItemPortion(models.Model):
         super().delete()
 
 
+class Loan(models.Model):
+    """A borrowed/returned instance that tracks item loans + transactions"""
+
+    qty = models.IntegerField(validators=[MinValueValidator(1)])
+    qty_returned = models.IntegerField(
+        validators=[MinValueValidator(0)], blank=True, default=0
+    )
+
+    timestamp_borrow = models.DateTimeField()
+    timestamp_return = models.DateTimeField(null=True, blank=True)
+
+    STATUS = (
+        ("b", "Borrowed"),
+        ("p", "Partially Returned"),
+        ("r", "Fully Returned"),
+    )
+
+    status = models.CharField(
+        max_length=1,
+        choices=STATUS,
+        blank=True,
+        default="b",
+        help_text="Loan status",
+    )
+
+    item = models.ForeignKey(ItemPortion, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+
+    class Meta:
+        ordering = ["timestamp_borrow"]
+
+    def __str__(self):
+        return f"Loan of {self.qty} {self.item.item.name} to {self.user.username}"
+
+
 class Unit(models.Model):
-    """A unit attributed to item it references e.g. bit, a drill bit
+    """A unit attributed to an item it references e.g. bit, a drill bit
 
     To access the items that have this instance as a unit:
     `items = unit.tagged_items.all()`
@@ -170,13 +205,3 @@ class Unit(models.Model):
 
     def __str__(self):
         return self.unit_name
-
-
-#class Borrow(models.Model):
-    #qty = models.IntegerField(validators=[MinValueValidator(1)])
-    #timestamp_check_out = models.DateTimeField()
-    #timestamp_check_in = models.DateTimeField(null=True, blank=True)
-    #item = models.ForeignKey(ItemPortion, on_delete=models.CASCADE)
-
-    #class Meta:
-        #ordering = ["timestamp_check_out"]
