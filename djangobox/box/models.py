@@ -170,7 +170,7 @@ class Loan(models.Model):
     timestamp_return = models.DateTimeField(null=True, blank=True)
 
     STATUS = (
-        ("b", "Borrowed"),
+        ("n", "None Returned"),
         ("p", "Partially Returned"),
         ("r", "Fully Returned"),
     )
@@ -179,7 +179,7 @@ class Loan(models.Model):
         max_length=1,
         choices=STATUS,
         blank=True,
-        default="b",
+        default="n",
         help_text="Loan status",
     )
 
