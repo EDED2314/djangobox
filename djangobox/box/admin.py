@@ -13,7 +13,7 @@ class BoxAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class ItemAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = list_display = (
+    list_display = (
         "name",
         "description",
         "sku",
@@ -24,7 +24,7 @@ class ItemAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class ItemPortionAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = list_display = (
+    list_display = (
         "item",
         "uuid",
         "qty",
@@ -33,7 +33,7 @@ class ItemPortionAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class LoanAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = list_display = (
+    list_display = (
         "item",
         "user",
         "qty",
@@ -42,6 +42,7 @@ class LoanAdmin(ExportActionMixin, admin.ModelAdmin):
         "timestamp_return",
         "status",
     )
+    list_filter = ("status", "user", "item")
 
 
 admin.site.register(Location, LocationAdmin)
