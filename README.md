@@ -25,7 +25,7 @@ $ python manage.py runserver
 ```
 
 ## Contributing 🏗️
-1. I will check and merge changes that is beneficial to this project's goal.
+1. I will check and merge changes that are beneficial to this project's goal.
 2. Feel free to comment and review code!
 
 ## Future Features + Plans 🛫
