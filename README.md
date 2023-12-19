@@ -8,7 +8,9 @@
 
 2. Modular storage: In many github repos that offer templates in inventory management, they do not address the variability in the storage structure that can exist in a makerspace. What DjangoBox does is creating a tree out of every storage unit and item so that a modular design is achieved.
 
-3. Easy set up + Any platform: With the help of python, platform support is extremely easy
+3. Borrows and Returns: Loan management!
+
+4. Easy set up + Any platform: With the help of python, platform support is extremely easy
 
 ## Setup👀
 ### Installation
