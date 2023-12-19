@@ -9,7 +9,7 @@ class LocationAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class BoxAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = ("name", "location")
+    list_display = ("name", "location", "box")
 
 
 class ItemAdmin(ExportActionMixin, admin.ModelAdmin):

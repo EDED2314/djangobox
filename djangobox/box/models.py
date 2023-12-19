@@ -4,6 +4,7 @@ from django.conf import settings
 from django.db import models
 from django.contrib.auth.models import AbstractUser
 from django.core.validators import MaxValueValidator, MinValueValidator
+from django.core.exceptions import ValidationError
 
 from django.urls import reverse
 
@@ -53,11 +54,8 @@ class Location(models.Model):
 class Box(models.Model):
     """Storage model
 
-    To access subboxes of a box:
+    To access subboxes of a box: (the boxes stored in my_box object)
     `sub_boxes = my_box.subboxes.all()`
-
-    To access boxes of a subbox:
-    `boxes = sub_box.boxes.all()`
 
     To access the items in this box:
     `item_portions_in_this_box = box.items.all()`
@@ -65,15 +63,31 @@ class Box(models.Model):
 
     name = models.CharField(max_length=200)
     location = models.ForeignKey(
-        Location, on_delete=models.CASCADE, related_name="boxes"
+        Location, on_delete=models.CASCADE, related_name="boxes", blank=True, null=True
     )
-    boxes = models.ManyToManyField("Box", related_name="subboxes", blank=True)
+    box = models.ForeignKey(
+        "Box", on_delete=models.SET_NULL, related_name="subboxes", blank=True, null=True
+    )
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
         return reverse("box-detail", args=[str(self.id)])
+
+    def clean(self):
+        """
+        Ensure that a box cannot reference itself as a subbox.
+        """
+        if self.box == self:
+            raise ValidationError("A box cannot be a subbox of itself.")
+
+    def save(self, *args, **kwargs):
+        """
+        Override the save method to call clean before saving.
+        """
+        self.clean()
+        super().save(*args, **kwargs)
 
 
 class Item(models.Model):
@@ -191,6 +205,47 @@ class Loan(models.Model):
 
     def __str__(self):
         return f"Loan of {self.qty} {self.item.item.name} to {self.user.username}"
+
+    def save(self, *args, **kwargs):
+        """
+        Override the save method to check constraints on qty and qty_returned.
+        """
+
+        if self.qty > self.item.qty:
+            raise ValidationError("Requested quantity exceeds available quantity.")
+
+        if self.qty_returned > self.qty:
+            raise ValidationError("Returned quantity cannot exceed borrowed quantity.")
+
+        if self.pk:
+            previous_state = Loan.objects.get(pk=self.pk)
+
+            if previous_state.status == "r":
+                raise ValidationError("Cannot modify a fully returned loan.")
+
+            if self.status == "r":
+                if self.qty_returned != self.qty:
+                    raise ValidationError(
+                        "Must fully return the items before marking the loan as fully returned."
+                    )
+
+            if self.status == "p":
+                if self.qty_returned == 0:
+                    raise ValidationError(
+                        "Must at least return a item before marking loan as partially returned."
+                    )
+                elif self.qty_returned == self.qty:
+                    raise ValidationError(
+                        "Must mark loan as 'r' if all items in loan are returned"
+                    )
+
+            if self.status == "n":
+                if self.qty_returned != 0:
+                    raise ValidationError(
+                        "Must have no items returned in order to mark something as none returned."
+                    )
+
+        super().save(*args, **kwargs)
 
 
 class Unit(models.Model):
