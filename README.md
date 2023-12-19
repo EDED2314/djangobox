@@ -29,7 +29,7 @@ $ python manage.py runserver
 2. Feel free to comment and review code!
 
 ## Future Features + Plans 🛫
-I have huge hope for this project an will continue to make this the best as I can! 😎
+I have huge hope for this project and will continue to make this the best as I can! 😎
 
 Some features planned are:
 - API Endpoints
