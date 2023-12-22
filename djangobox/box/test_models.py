@@ -9,7 +9,6 @@ from .models import User, Location, Box, Item, ItemPortion, Unit, Loan
 
 class ModelTests(TestCase):
     def setUp(self):
-        # Create sample instances for testing
         self.user = User.objects.create(username="testuser", user_id=12345)
         self.location = Location.objects.create(name="Test Location")
 
@@ -24,8 +23,6 @@ class ModelTests(TestCase):
         self.item_portion = ItemPortion.objects.create(
             item=self.item, qty=10, uuid="test-uuid"
         )
-
-        # self.jumperwiresLoan = Loan.objects.create()
 
     def test_location_absolute_url(self):
         url = reverse("location-detail", args=[str(self.location.id)])
@@ -108,7 +105,7 @@ class ModelTests(TestCase):
         )
 
         with self.assertRaises(ValidationError):
-            loan.save()  # Attempt to modify a fully returned loan
+            loan.save()
 
     def test_loan_save_invalid_returned_qty_with_status(self):
         # Test saving a loan with returned quantity exceeding borrowed quantity and status set to "Fully Returned"
