@@ -25,7 +25,7 @@ class ModelTests(TestCase):
         )
 
     def test_location_absolute_url(self):
-        url = reverse("locations", args=[str(self.location.id)])
+        url = reverse("locations")
         self.assertEqual(self.location.get_absolute_url(), url)
 
     def test_box_foreignkey(self):

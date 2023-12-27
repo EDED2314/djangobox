@@ -5,9 +5,9 @@
     <div class="row">
       <div class="col-12">
         <select id="selectNode"></select>
-      </div>
 
-      <div id="tree-container"></div>
+        <div id="tree-container"></div>
+      </div>
     </div>
 
     <div class="row">
@@ -289,22 +289,24 @@
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script>
     function renderTree(treeData) {
-      var margin = { top: 20, right: 90, bottom: 30, left: 300 }
-      var width = 960 - margin.left - margin.right
-      var height = 500 - margin.top - margin.bottom
+      light_color = localStorage.getItem('light_color')
+      var root = d3.hierarchy(treeData)
+      padding = 3
+      var width = 300
+    
+      const dx = 50
+      const dy = width / (root.height + padding)
+      height = dy * root.height
     
       var svg = d3
         .select('#tree-container')
         .append('svg')
-        .attr('width', width + margin.left + margin.right)
-        .attr('height', height + margin.top + margin.bottom)
+        .attr('width', '100%')
+        .attr('height', height)
         .append('g')
-        .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
+        .attr('transform', 'translate(' + (width / 2 + 60) + ',' + height / 2 + ')')
     
-      var tree = d3.tree().size([height, width])
-    
-      var root = d3.hierarchy(treeData)
-    
+      var tree = d3.tree().nodeSize([dy, dx])
       var treeData = tree(root)
     
       var stroke = '#2181ff' // stroke for links
@@ -349,11 +351,10 @@
         .attr('dy', '0.31em')
         .attr('x', (d) => (d.children ? -6 : 6))
         .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
-    
         .text((d) => d.data.name)
         .clone(true)
         .lower()
-        .attr('stroke', 'white')
+        .attr('stroke', light_color == 'true' ? null : stroke)
     }
     
     fetch('func/get_tree_data/')

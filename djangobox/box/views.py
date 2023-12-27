@@ -44,7 +44,6 @@ def get_tree_data(request):
             "url": location.get_absolute_url(),
             "children": [],
         }
-        print(location)
 
         boxes = location.boxes.all()
         for box in boxes:
@@ -52,7 +51,7 @@ def get_tree_data(request):
 
         tree_data.append(location_data)
 
-    print(tree_data)
+    # print(tree_data)
     return JsonResponse(tree_data, safe=False)
 
 
