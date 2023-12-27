@@ -1,0 +1,63 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="content">
+    <div class="row">
+      <div class="col">
+        <div class="card card-user">
+          <div class="card-body">
+            <div class="card-text">
+              <div class="author">
+                <div class="block block-one"></div>
+                <div class="block block-two"></div>
+                <div class="block block-three"></div>
+                <div class="block block-four"></div>
+                <a href="javascript:void(0)">
+                  <img class="avatar" src="{% static 'assets/img/default-avatar.png' %}" alt="user avatar" />
+                  {% if user.last_name == '' and user.first_name == '' %}
+                    <h5 class="title">{{ user.username }}</h5>
+                  {% else %}
+                    <h5 class="title">{{ user.first_name }} {{ user.last_name }}</h5>
+                  {% endif %}
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-body">
+        <div class="row">
+          <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+              <label>Username</label>
+              <input type="text" class="form-control" placeholder="Username" value="{{ user.username }}" />
+            </div>
+          </div>
+          <div class="col-md-6 pl-md-1">
+            <div class="form-group">
+              <label for="exampleInputEmail1">Email address</label>
+              <input type="text" class="form-control" placeholder="Email" value="{{ user.email }}" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-6 pr-md-1">
+            <div class="form-group">
+              <label>First Name</label>
+              <input type="text" class="form-control" placeholder="" value="{{ user.first_name }}" />
+            </div>
+          </div>
+          <div class="col-md-6 pl-md-1">
+            <div class="form-group">
+              <label>Last Name</label>
+              <input type="text" class="form-control" placeholder="" value="{{ user.last_name }}" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

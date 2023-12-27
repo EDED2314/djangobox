@@ -1,0 +1,52 @@
+<ul class="nav">
+  <li class="{% if 'dashboard' in segment %}{% endif %}">
+    <a href="/">
+      <i class="tim-icons icon-chart-pie-36"></i>
+      <p>Dashboard</p>
+    </a>
+  </li>
+  {% if not request.user.is_authenticated %}
+    <li class="{% if 'pages' in parent %}{% endif %}">
+      <a data-toggle="collapse" href="#pagesExamples">
+        <i class="tim-icons icon-lock-circle"></i>
+        <p>
+          Authentication
+          <b class="caret"></b>
+        </p>
+      </a>
+      <div class="collapse" id="pagesExamples">
+        <ul class="nav">
+          <li>
+            <a href="{% url 'signin' %}">
+              <span class="sidebar-mini-icon">L</span>
+              <span class="sidebar-normal">Login</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </li>
+  {% endif %}
+
+  {% if request.user.is_superuser %}
+    <li>
+      <a href="{% url 'admin:login' %}">
+        <i class="tim-icons icon-settings-gear-63"></i>
+        <p>Admin Page</p>
+      </a>
+    </li>
+  {% endif %}
+  {% if request.user.is_authenticated %}
+    <li>
+      <a href="{% url 'profile' %}">
+        <i class="tim-icons icon-single-02"></i>
+        <p>User Profile</p>
+      </a>
+    </li>
+    <li>
+      <a href="{% url 'logout' %}">
+        <i class="tim-icons icon-button-power"></i>
+        <p>Logout</p>
+      </a>
+    </li>
+  {% endif %}
+</ul>

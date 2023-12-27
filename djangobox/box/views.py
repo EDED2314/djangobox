@@ -1,12 +1,32 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views import generic
+from django.contrib.auth import views as auth_views
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 
-from django.http import HttpResponse
 from .models import Location, Box, Item, Loan
+from .forms import LoginForm
 
 
 def index(request):
-    return HttpResponse("Hello, world. You're at the polls index.")
+    return render(request, "pages/dashboard.html")
+
+
+class AuthSignin(auth_views.LoginView):
+    template_name = "accounts/auth-signin.html"
+    form_class = LoginForm
+    success_url = "/"
+
+
+@login_required(login_url="/accounts/auth-signin")
+def profile(request):
+    context = {"user": request.user}
+    return render(request, "pages/user.html", context)
+
+
+def user_logout_view(request):
+    logout(request)
+    return redirect("/accounts/auth-signin/")
 
 
 class LocationListView(generic.ListView):

@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    {% include 'includes/head.html' %}
+    {% block extrahead %}
+
+    {% endblock %}
+    {% block extrastyle %}
+
+    {% endblock %}
+  </head>
+
+  <body class="{% block bodyclass %}
+    {% endblock %}">
+    <div class="wrapper">
+      {% block sidebar %}
+        {% include 'includes/sidebar.html' %}
+      {% endblock %}
+      <div class="main-panel">
+        {% block navigation %}
+          {% include 'includes/navigation.html' %}
+        {% endblock %}
+        {% block content %}
+
+        {% endblock %}
+        {% block footer %}
+          {% include 'includes/footer.html' %}
+        {% endblock %}
+      </div>
+    </div>
+
+    {% include 'includes/scripts.html' %}
+  </body>
+</html>

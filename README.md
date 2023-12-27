@@ -4,7 +4,7 @@
 ![tests](https://github.com/EDED2314/djangobox/actions/workflows/django.yml/badge.svg)
 
 ## Features 🚀
-1. Inventory management: So far, this is through the admin panel, a UI will be coming shortly
+1. Inventory management
 
 2. Modular storage: In many github repos that offer templates in inventory management, they do not address the variability in the storage structure that can exist in a makerspace. What DjangoBox does is creating a tree out of every storage unit and item so that a modular design is achieved.
 
@@ -24,6 +24,10 @@ $ python manage.py createsuperuser
 $ python manage.py runserver
 ```
 
+### Personalization
+You can set your own `DB` and `SECRET_KEY` by following the `env.sample` file
+
+
 ## Contributing 🏗️
 1. I will check and merge changes that are beneficial to this project's goal.
 2. Feel free to comment and review code!
@@ -35,3 +39,5 @@ Some features planned are:
 - API Endpoints
 - Docker compose files + images
 
+## Credits
+- UI credits to app-generator's [`django-black-dashboard`](https://github.com/app-generator/django-black-dashboard), which is an open-source `Bootstrap 5` design from Creative-Tim.
