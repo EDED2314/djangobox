@@ -11,11 +11,11 @@ from .forms import LoginForm
 
 def get_sub_box_data(box):
     """Recursively gather data from sub-boxes."""
-    box_data = {"name": box.name, "children": []}
+    box_data = {"name": box.name, "url": box.get_absolute_url(), "children": []}
 
     items = box.items.all()
     for item in items:
-        item_data = {"name": item.name, "children": []}
+        item_data = {"name": item.name, "url": item.get_absolute_url(), "children": []}
 
         portions = item.portions.all()
         for portion in portions:
@@ -39,7 +39,11 @@ def get_tree_data(request):
     tree_data = []
 
     for location in locations:
-        location_data = {"name": location.name, "children": []}
+        location_data = {
+            "name": location.name,
+            "url": location.get_absolute_url(),
+            "children": [],
+        }
         print(location)
 
         boxes = location.boxes.all()
