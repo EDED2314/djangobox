@@ -28,10 +28,9 @@ def get_sub_box_data(box):
     subboxes = box.subboxes.all()
     for subbox in subboxes:
         subbox_data.append(get_sub_box_data(subbox))
-        print(subbox_data)
 
     box_data["children"].extend(subbox_data)
-    print(box_data)
+
     return box_data
 
 
