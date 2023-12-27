@@ -31,10 +31,12 @@ def user_logout_view(request):
 
 class LocationListView(generic.ListView):
     model = Location
+    context_object_name = "location_list"
 
 
 class LocationView(generic.DetailView):
     model = Location
+    context_object_name = "location"
 
 
 class BoxListView(generic.ListView):
