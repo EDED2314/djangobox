@@ -5,7 +5,7 @@ from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 
-from .models import Location, Box, Item, Loan
+from .models import Location, Box, Item, Loan, ItemPortion
 from .forms import LoginForm
 
 
@@ -13,16 +13,14 @@ def get_sub_box_data(box):
     """Recursively gather data from sub-boxes."""
     box_data = {"name": box.name, "url": box.get_absolute_url(), "children": []}
 
-    items = box.items.all()
-    for item in items:
-        item_data = {"name": item.name, "url": item.get_absolute_url(), "children": []}
-
-        portions = item.portions.all()
-        for portion in portions:
-            portion_data = {"name": f"Portion: {portion.uuid}", "size": portion.qty}
-            item_data["children"].append(portion_data)
-
-        box_data["children"].append(item_data)
+    portions = box.items.all()
+    for portion in portions:
+        portion_data = {
+            "name": f"Portion for Item |{portion.item.name}|: {portion.uuid} ",
+            "size": portion.qty,
+            "url": portion.get_absolute_url(),
+        }
+        box_data["children"].append(portion_data)
 
     subbox_data = []
     subboxes = box.subboxes.all()
@@ -51,7 +49,6 @@ def get_tree_data(request):
 
         tree_data.append(location_data)
 
-    # print(tree_data)
     return JsonResponse(tree_data, safe=False)
 
 
@@ -103,3 +100,7 @@ class LoanListView(generic.ListView):
 
 class LoanView(generic.DetailView):
     model = Loan
+
+
+class ItemPortionView(generic.DetailView):
+    model = ItemPortion

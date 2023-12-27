@@ -171,6 +171,9 @@ class ItemPortion(models.Model):
 
         super().delete()
 
+    def get_absolute_url(self):
+        return reverse("portion-detail", args=[str(self.id)])
+
 
 class Loan(models.Model):
     """A borrowed/returned instance that tracks item loans + transactions"""
@@ -244,6 +247,14 @@ class Loan(models.Model):
                     raise ValidationError(
                         "Must have no items returned in order to mark something as none returned."
                     )
+
+            diff = self.qty_returned - previous_state.qty_returned
+            self.item.qty += diff
+            self.item.save()
+
+        else:
+            self.item.qty -= self.qty
+            self.item.save()
 
         super().save(*args, **kwargs)
 
