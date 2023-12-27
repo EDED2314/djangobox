@@ -48,7 +48,7 @@ class Location(models.Model):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("location-detail", args=[str(self.id)])
+        return reverse("locations")
 
 
 class Box(models.Model):

@@ -3,47 +3,42 @@
   {% load static %}
 
   {% if location_list %}
-    <section class="py-4">
-      <div class="container">
-        <h3 class="fw-bolder text-center">List of Locations</h3>
-        <br />
-        <div class="card rounded-0 shadow">
-          <div class="card-body">
-            <div class="container-fluid">
-              <table class="table table-striped tablesorter" id="category-tbl">
-                <colcategory>
-                  <col width="5%" />
-                  <col width="30%" />
-                  <col width="15%" />
-                  <col width="15%" />
-                </colcategory>
-                <thead>
-                  <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Address</th>
-                    <th class="text-center">Postcode</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {% for loc in location_list %}
+    <div class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+              <h4 class="card-title">List of Locations</h4>
+              <p class="category">This is where you can see all your main storage-box places</p>
+            </div>
+            <div class="card-body">
+              <div class="container-fluid">
+                <table class="table table-striped tablesorter" id="category-tbl">
+                  <thead>
                     <tr>
-                      <td class="text-center">{{ loc.pk }}</td>
-
-                      <td>
-                        <a href="{{ loc.get_absolute_url }}">{{ loc.name }}</a>
-                      </td>
-                      <td>{{ loc.address }}</td>
-                      <td>{{ loc.postcode }}</td>
+                      <th class="text-center">ID</th>
+                      <th class="text-center">Name</th>
+                      <th class="text-center">Address</th>
+                      <th class="text-center">Postcode</th>
                     </tr>
-                  {% endfor %}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {% for loc in location_list %}
+                      <tr>
+                        <td class="text-center">{{ loc.pk }}</td>
+                        <td class="text-center">{{ loc.name }}</td>
+                        <td class="text-center">{{ loc.address }}</td>
+                        <td class="text-center">{{ loc.postcode }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
-    </section>
+    </div>
   {% else %}
     <p>There are no locations in the database.</p>
   {% endif %}

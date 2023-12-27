@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 from django.views import generic
 from django.contrib.auth import views as auth_views
 from django.contrib.auth.decorators import login_required
@@ -6,6 +7,50 @@ from django.contrib.auth import logout
 
 from .models import Location, Box, Item, Loan
 from .forms import LoginForm
+
+
+def get_sub_box_data(box):
+    """Recursively gather data from sub-boxes."""
+    box_data = {"name": box.name, "children": []}
+
+    items = box.items.all()
+    for item in items:
+        item_data = {"name": item.name, "children": []}
+
+        portions = item.portions.all()
+        for portion in portions:
+            portion_data = {"name": f"Portion: {portion.uuid}", "size": portion.qty}
+            item_data["children"].append(portion_data)
+
+        box_data["children"].append(item_data)
+
+    subbox_data = []
+    subboxes = box.subboxes.all()
+    for subbox in subboxes:
+        subbox_data.append(get_sub_box_data(subbox))
+        print(subbox_data)
+
+    box_data["children"].extend(subbox_data)
+    print(box_data)
+    return box_data
+
+
+def get_tree_data(request):
+    locations = Location.objects.all()
+    tree_data = []
+
+    for location in locations:
+        location_data = {"name": location.name, "children": []}
+        print(location)
+
+        boxes = location.boxes.all()
+        for box in boxes:
+            location_data["children"].append(get_sub_box_data(box))
+
+        tree_data.append(location_data)
+
+    print(tree_data)
+    return JsonResponse(tree_data, safe=False)
 
 
 def index(request):
@@ -32,11 +77,6 @@ def user_logout_view(request):
 class LocationListView(generic.ListView):
     model = Location
     context_object_name = "location_list"
-
-
-class LocationView(generic.DetailView):
-    model = Location
-    context_object_name = "location"
 
 
 class BoxListView(generic.ListView):
