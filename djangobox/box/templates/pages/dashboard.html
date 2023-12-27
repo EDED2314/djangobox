@@ -343,10 +343,13 @@
         .attr('r', 2.5)
     
       node
+        .append('a')
+        .attr('href', (d) => d.data.url)
         .append('text')
         .attr('dy', '0.31em')
         .attr('x', (d) => (d.children ? -6 : 6))
         .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
+    
         .text((d) => d.data.name)
         .clone(true)
         .lower()
