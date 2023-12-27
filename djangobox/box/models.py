@@ -247,6 +247,9 @@ class Loan(models.Model):
 
         super().save(*args, **kwargs)
 
+    def get_absolute_url(self):
+        return reverse("loan-detail", args=[str(self.id)])
+
 
 class Unit(models.Model):
     """A unit attributed to an item it references e.g. bit, a drill bit
