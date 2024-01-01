@@ -3,7 +3,7 @@
 {% block content %}
   <div class="content">
     <div class="row">
-      <div class="col-12">
+      <div class="col-12" id="tree-div">
         <select id="selectNode"></select>
 
         <div id="tree-container"></div>
@@ -304,7 +304,7 @@
         .attr('width', '100%')
         .attr('height', height)
         .append('g')
-        .attr('transform', 'translate(' + (width / 2 + 60) + ',' + height / 2 + ')')
+        .attr('transform', 'translate(' + (width / 2 + 200) + ',' + height / 2 + ')')
     
       var tree = d3.tree().nodeSize([dy, dx])
       var treeData = tree(root)
@@ -351,7 +351,7 @@
         .attr('dy', '0.31em')
         .attr('x', (d) => (d.children ? -6 : 6))
         .attr('text-anchor', (d) => (d.children ? 'end' : 'start'))
-        .text((d) => d.data.name)
+        .text((d) => d.data.type + ': ' + d.data.name)
         .clone(true)
         .lower()
         .attr('stroke', light_color == 'true' ? null : stroke)
@@ -371,6 +371,15 @@
     
         selectNode.onchange = function () {
           selectedIndex = selectNode.selectedIndex
+          const element = document.getElementById('tree-container')
+          element.remove()
+          var newContainer = document.createElement('div')
+          newContainer.setAttribute('id', 'tree-container')
+          selectNode = document.getElementById('selectNode')
+          const treeDiv = document.getElementById('tree-div')
+          treeDiv.insertBefore(newContainer, selectNode.nextSibling)
+    
+          renderTree(data[selectedIndex])
         }
     
         renderTree(data[selectedIndex]) // Assuming data[0] is the root node of the tree

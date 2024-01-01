@@ -11,14 +11,20 @@ from .forms import LoginForm
 
 def get_sub_box_data(box):
     """Recursively gather data from sub-boxes."""
-    box_data = {"name": box.name, "url": box.get_absolute_url(), "children": []}
+    box_data = {
+        "name": box.name,
+        "url": box.get_absolute_url(),
+        "children": [],
+        "type": "Box",
+    }
 
     portions = box.items.all()
     for portion in portions:
         portion_data = {
-            "name": f"Portion for Item |{portion.item.name}|: {portion.uuid} ",
+            "name": f"item <{portion.item.name}>",
             "size": portion.qty,
             "url": portion.get_absolute_url(),
+            "type": "Portion",
         }
         box_data["children"].append(portion_data)
 
@@ -41,6 +47,7 @@ def get_tree_data(request):
             "name": location.name,
             "url": location.get_absolute_url(),
             "children": [],
+            "type": "Location",
         }
 
         boxes = location.boxes.all()
