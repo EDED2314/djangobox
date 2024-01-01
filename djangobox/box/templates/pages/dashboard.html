@@ -15,6 +15,9 @@
       display: none;
       z-index: 100;
     }
+    .tree-node-label {
+      cursor: pointer;
+    }
     menu {
       position: absolute;
       display: block;
@@ -73,6 +76,7 @@
       </div>
     </div>
   </div>
+  <div id="cords"></div>
   <!-- TODO: Finish Context Menu Feature -->
   <menu id="ctxMenu">
     <menu title="Locations">
@@ -87,12 +91,14 @@
     <menu title="Item Portions">
       <menu onclick="removePortionfromBox()">Remove item portion from current box</menu>
     </menu>
+    <menu onclick="closeMenu()">Close Menu</menu>
   </menu>
 {% endblock %}
 
 {% block extrascripts %}
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script>
+    document.onmousemove = handleMouseMove
     function addItem() {
       console.log('addItem clicked')
     }
@@ -105,35 +111,29 @@
       console.log('removeBox clicked')
     }
     
+    function closeMenu() {
+      var ctxMenu = document.getElementById('ctxMenu')
+      ctxMenu.style.display = ''
+      ctxMenu.style.left = ''
+      ctxMenu.style.top = ''
+    }
+    
     function displayContextMenu(id, type) {
       console.log('displayContextMenu clicked')
       console.log(id, type)
+      var ctxMenu = document.getElementById('ctxMenu')
+      ctxMenu.style.display = 'block'
+      ctxMenu.style.left = document.getElementById('cords').getAttribute('x') - 10 + 'px'
+      ctxMenu.style.top = document.getElementById('cords').getAttribute('y') - 10 + 'px'
     }
     
-    var notepad = document.getElementById('notepad')
-    notepad.addEventListener(
-      'contextmenu',
-      function (event) {
-        event.preventDefault()
-        var ctxMenu = document.getElementById('ctxMenu')
-        ctxMenu.style.display = 'block'
-        ctxMenu.style.left = event.pageX - 10 + 'px'
-        ctxMenu.style.top = event.pageY - 10 + 'px'
-        return false
-      },
-      false
-    )
-    document.addEventListener(
-      'click',
-      function (event) {
-        var ctxMenu = document.getElementById('ctxMenu')
-        ctxMenu.style.display = ''
-        ctxMenu.style.left = ''
-        ctxMenu.style.top = ''
-        return false
-      },
-      false
-    )
+    function handleMouseMove(event) {
+      let x = event.clientX
+      let y = event.clientY
+      let cords = document.getElementById('cords')
+      cords.setAttribute('x', x)
+      cords.setAttribute('y', y)
+    }
     
     function renderTree(treeData) {
       light_color = localStorage.getItem('light_color')
@@ -209,9 +209,8 @@
     
       node
         .append('a')
-        .attr('onclick', 'displayContextMenu(' + d.data.id + ',' + d.data.type + ')')
-        // .attr('id', (d) => d.data.id)
-        // .attr('type', (d) => d.data.type)
+        .attr('onclick', (d) => "displayContextMenu('" + d.data.id.toString() + "','" + d.data.type.toString() + "')")
+        .attr('class', 'tree-node-label')
         .append('text')
         .attr('dy', '0.31em')
         .attr('x', (d) => (d.children ? -6 : 6))
