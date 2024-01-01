@@ -27,6 +27,7 @@
             </div>
             <div class="svgrow" id="tree-div">
               <div id="tree-container"></div>
+              <div id="tree-container-locator"></div>
             </div>
           </div>
         </div>
@@ -152,9 +153,9 @@
           element.remove()
           var newContainer = document.createElement('div')
           newContainer.setAttribute('id', 'tree-container')
-          selectNode = document.getElementById('selectNode')
+          locator = document.getElementById('tree-container-locator')
           const treeDiv = document.getElementById('tree-div')
-          treeDiv.insertBefore(newContainer, selectNode.nextSibling)
+          treeDiv.insertBefore(newContainer, locator.nextSibling)
     
           renderTree(data[selectedIndex])
         }
