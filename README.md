@@ -10,7 +10,9 @@
 
 3. Borrows and Returns: Loan management!
 
-4. Easy set up + Any platform: With the help of python, platform support is extremely easy
+4. Bare-minimum UI to allow for user custimizability
+
+5. Easy set up + Any platform: With the help of python, platform support is extremely easy
 
 ## Setup👀
 ### Installation
