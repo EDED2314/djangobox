@@ -291,10 +291,13 @@
     function renderTree(treeData) {
       light_color = localStorage.getItem('light_color')
       var root = d3.hierarchy(treeData)
+      root.sort(function (a, b) {
+        return a.data.type.toLowerCase().localeCompare(b.data.type.toLowerCase())
+      })
       padding = 3
       var width = 300
     
-      const dx = 50
+      const dx = 100
       const dy = width / (root.height + padding)
       height = dy * root.height + 200
     
