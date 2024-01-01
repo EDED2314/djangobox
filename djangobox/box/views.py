@@ -14,8 +14,9 @@ def get_sub_box_data(box):
     box_data = {
         "name": box.name,
         "url": box.get_absolute_url(),
-        "children": [],
         "type": "Box",
+        "id": box.pk,
+        "children": [],
     }
 
     portions = box.items.all()
@@ -25,6 +26,7 @@ def get_sub_box_data(box):
             "size": portion.qty,
             "url": portion.get_absolute_url(),
             "type": "Portion",
+            "id": portion.slug,
         }
         box_data["children"].append(portion_data)
 
@@ -46,8 +48,9 @@ def get_tree_data(request):
         location_data = {
             "name": location.name,
             "url": location.get_absolute_url(),
-            "children": [],
             "type": "Location",
+            "id": location.pk,
+            "children": [],
         }
 
         boxes = location.boxes.all()

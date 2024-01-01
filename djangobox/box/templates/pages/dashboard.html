@@ -72,17 +72,8 @@
         </div>
       </div>
     </div>
-    <!-- TODO: Finish -->
-    <div class="row">
-      <div id="notepad">
-        <a href="www.google.com" class="test">Google</a>
-        <a href="www.google.com" class="test">Link 2</a>
-        <a href="www.google.com" class="test">Link 3</a>
-        <a href="www.google.com" class="test">Link 4</a>
-      </div>
-    </div>
   </div>
-
+  <!-- TODO: Finish Context Menu Feature -->
   <menu id="ctxMenu">
     <menu title="Locations">
       <menu onclick="addBoxInLocation()">Add box into location</menu>
@@ -112,6 +103,11 @@
     
     function removeBox() {
       console.log('removeBox clicked')
+    }
+    
+    function displayContextMenu(id, type) {
+      console.log('displayContextMenu clicked')
+      console.log(id, type)
     }
     
     var notepad = document.getElementById('notepad')
@@ -213,7 +209,9 @@
     
       node
         .append('a')
-        .attr('href', (d) => d.data.url)
+        .attr('onclick', 'displayContextMenu(' + d.data.id + ',' + d.data.type + ')')
+        // .attr('id', (d) => d.data.id)
+        // .attr('type', (d) => d.data.type)
         .append('text')
         .attr('dy', '0.31em')
         .attr('x', (d) => (d.children ? -6 : 6))
