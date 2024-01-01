@@ -248,7 +248,6 @@ class Loan(models.Model):
                         "Must have no items returned in order to mark something as none returned."
                     )
 
-            # TODO test this code
             diff = self.qty_returned - previous_state.qty_returned
             self.item.qty += diff
             self.item.save()
