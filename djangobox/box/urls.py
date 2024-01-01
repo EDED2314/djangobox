@@ -12,7 +12,9 @@ urlpatterns = [
     path("inv/loans/", views.LoanListView.as_view(), name="loans"),
     path("inv/loans/<int:pk>/", views.LoanView.as_view(), name="loan-detail"),
     path(
-        "inv/portions/<int:pk>/", views.ItemPortionView.as_view(), name="portion-detail"
+        "inv/portions/<str:slug>/",
+        views.ItemPortionView.as_view(),
+        name="portion-detail",
     ),
     path("accounts/profile/", views.profile, name="profile"),
     path("accounts/auth-signin/", views.AuthSignin.as_view(), name="signin"),

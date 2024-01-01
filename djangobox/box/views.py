@@ -111,3 +111,4 @@ class LoanView(generic.DetailView):
 
 class ItemPortionView(generic.DetailView):
     model = ItemPortion
+    slug_url_kwarg = "slug"

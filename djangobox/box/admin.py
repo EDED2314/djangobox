@@ -26,7 +26,7 @@ class ItemAdmin(ExportActionMixin, admin.ModelAdmin):
 class ItemPortionAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = (
         "item",
-        "uuid",
+        "slug",
         "qty",
         "box",
     )

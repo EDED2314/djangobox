@@ -124,7 +124,7 @@ class ItemPortion(models.Model):
 
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
     qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    uuid = ShortUUIDField()
+    slug = ShortUUIDField()
 
     box = models.ForeignKey(
         Box, on_delete=models.SET_NULL, related_name="items", null=True
@@ -150,7 +150,7 @@ class ItemPortion(models.Model):
 
             if not (os.path.isfile(full_path)):
                 barclass = barcode.get_barcode_class("Code128")
-                code = barclass(f"{self.uuid}", writer=ImageWriter())
+                code = barclass(f"{self.slug}", writer=ImageWriter())
                 buffer = BytesIO()
                 code.write(buffer)
                 self.barcode.save(file_name, File(buffer), save=True)
@@ -158,7 +158,7 @@ class ItemPortion(models.Model):
         except BarcodeError as e:
             logger = logging.getLogger(__name__)
             logger.error(
-                f"[ItemPortion uuid:{self.pk}]| Barcode generation failed for Item {self.item.name}: {e}"
+                f"[ItemPortion uuid:{self.slug}]| Barcode generation failed for Item {self.item.name}: {e}"
             )
 
         return self
@@ -172,7 +172,7 @@ class ItemPortion(models.Model):
         super().delete()
 
     def get_absolute_url(self):
-        return reverse("portion-detail", args=[str(self.id)])
+        return reverse("portion-detail", args=[str(self.slug)])
 
 
 class Loan(models.Model):

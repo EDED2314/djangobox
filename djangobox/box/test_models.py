@@ -21,7 +21,7 @@ class ModelTests(TestCase):
 
         self.item = Item.objects.create(name="Test Item")
         self.item_portion = ItemPortion.objects.create(
-            item=self.item, qty=10, uuid="test-uuid"
+            item=self.item, qty=10, slug="test-uuid"
         )
 
     def test_location_absolute_url(self):
@@ -44,7 +44,7 @@ class ModelTests(TestCase):
 
     def test_item_portion_save_method(self):
         item_portion = ItemPortion.objects.create(
-            item=self.item, qty=1, uuid="SAVETEST", box=self.box1
+            item=self.item, qty=1, slug="SAVETEST", box=self.box1
         )
         # Ensure barcode file is created
         self.assertTrue(item_portion.barcode.name)
@@ -52,7 +52,7 @@ class ModelTests(TestCase):
 
     def test_item_portion_delete_method(self):
         item_portion = ItemPortion.objects.create(
-            item=self.item, qty=1, uuid="DELTEST", box=self.box1
+            item=self.item, qty=1, slug="DELTEST", box=self.box1
         )
         file_path = item_portion.barcode.path
         # Ensure barcode file exists before deletion
