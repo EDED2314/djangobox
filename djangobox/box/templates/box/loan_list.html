@@ -1,0 +1,47 @@
+{% extends 'layouts/base.html' %}
+{% block content %}
+  {% load static %}
+
+  
+    <div class="content">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="card">
+            <div class="card-header">
+                <h4 class="card-title">List of loans</h4>
+                {% if loan_list %}
+                    <p class="category">This is where you see all loans</p>
+                {% else %}
+                    <p class="category">There are no loans in the database</p>
+                {% endif %}
+            </div>
+            <div class="card-body">
+              <div class="container-fluid">
+                <table class="table table-striped tablesorter" id="category-tbl">
+                  <thead>
+                    <tr>
+                      <th class="text-center">ID</th>
+                      <th class="text-center">Name</th>
+                      <th class="text-center">Address</th>
+                      <th class="text-center">Postcode</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% for loan in loan_list %}
+                      <tr>
+                        <td class="text-center">{{ loan.pk }}</td>
+                        <td class="text-center">{{ loan.name }}</td>
+                        <td class="text-center">{{ loan.address }}</td>
+                        <td class="text-center">{{ loan.postcode }}</td>
+                      </tr>
+                    {% endfor %}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+{% endblock %}

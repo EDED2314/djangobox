@@ -2,14 +2,18 @@
 {% block content %}
   {% load static %}
 
-  {% if location_list %}
+  
     <div class="content">
       <div class="row">
         <div class="col-md-12">
           <div class="card">
             <div class="card-header">
               <h4 class="card-title">List of Locations</h4>
+              {% if location_list %}
               <p class="category">This is where you can see all your main storage-box places</p>
+              {% else %}
+              <p class="category">There are no locations in the database.</p>
+              {% endif %}
             </div>
             <div class="card-body">
               <div class="container-fluid">
@@ -39,7 +43,5 @@
         </div>
       </div>
     </div>
-  {% else %}
-    <p>There are no locations in the database.</p>
-  {% endif %}
+  
 {% endblock %}
