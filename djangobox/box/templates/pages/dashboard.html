@@ -11,10 +11,7 @@
     .svgrow svg {
       min-width: 70rem;
     }
-    #ctxMenu {
-      display: none;
-      z-index: 100;
-    }
+    
     .tree-node-label {
       cursor: pointer;
     }
@@ -45,7 +42,7 @@
       position: relative;
       top: -20px;
       left: 100%;
-      width: 250px;
+      width: 280px;
     }
     menu[title]:before {
       content: attr(title);
@@ -76,29 +73,23 @@
       </div>
     </div>
   </div>
+  <div id="menustorage">
+    <div id="menu-storage-locator"></div>
+  </div>
   <div id="cords"></div>
-  <!-- TODO: Finish Context Menu Feature -->
-  <menu id="ctxMenu">
-    <menu title="Locations">
-      <menu onclick="addBoxInLocation()">Add box into location</menu>
-      <menu onclick="removeBoxfromLocation()">Remove box from current location</menu>
-    </menu>
-    <menu title="Boxes">
-      <menu onclick="addItemInBox()">Add item portion into box</menu>
-      <menu onclick="addBoxInBox()">Add box into box</menu>
-      <menu onclick="removeBoxfromBox()">Remove box from current box</menu>
-    </menu>
-    <menu title="Item Portions">
-      <menu onclick="removePortionfromBox()">Remove item portion from current box</menu>
-    </menu>
-    <menu onclick="closeMenu()">Close Menu</menu>
-  </menu>
 {% endblock %}
 
 {% block extrascripts %}
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script>
     document.onmousemove = handleMouseMove
+    document.onclick = function (event) {
+      closeMenu()
+    }
+    document.oncontextmenu = function (event) {
+      event.preventDefault()
+      return false
+    }
     // FIXME: Might want to delete/customize these things
     function addItem() {
       console.log('addItem clicked')
@@ -113,19 +104,58 @@
     }
     
     function closeMenu() {
-      var ctxMenu = document.getElementById('ctxMenu')
-      ctxMenu.style.display = ''
-      ctxMenu.style.left = ''
-      ctxMenu.style.top = ''
+      var men = document.getElementById('rmenu')
+      if (men === null) {
+      } else {
+        men.remove()
+      }
     }
     
-    function displayContextMenu(id, type) {
+    function displayContextMenu(id, type, url) {
+      closeMenu()
       console.log('displayContextMenu clicked')
-      console.log(id, type)
-      var ctxMenu = document.getElementById('ctxMenu')
-      ctxMenu.style.display = 'block'
-      ctxMenu.style.left = document.getElementById('cords').getAttribute('x') - 10 + 'px'
-      ctxMenu.style.top = document.getElementById('cords').getAttribute('y') - 10 + 'px'
+      console.log(id, type, url)
+    
+      var rmenu = document.createElement('menu')
+      rmenu.setAttribute('id', 'rmenu')
+      rmenu.setAttribute('style', 'display:none;z-index:100;')
+    
+      if (type == 'Location') {
+        let men1 = document.createElement('menu')
+        men1.setAttribute('onclick', 'addBoxInLocation()')
+        men1.innerText += 'Add box into current location'
+        rmenu.append(men1)
+        let men2 = document.createElement('menu')
+        men2.setAttribute('onclick', 'removeBoxfromLocation()')
+        men2.innerText += 'Remove box from current location'
+        rmenu.append(men2)
+      } else if (type == 'Box') {
+        let men1 = document.createElement('menu')
+        men1.setAttribute('onclick', 'addItemInBox()')
+        men1.innerText += 'Add item portion into box'
+        rmenu.append(men1)
+        let men2 = document.createElement('menu')
+        men2.setAttribute('onclick', 'addBoxInBox()')
+        men2.innerText += 'Add box into box'
+        rmenu.append(men2)
+        let men3 = document.createElement('menu')
+        men3.setAttribute('onclick', 'removeBoxfromBox()')
+        men3.innerText += 'Remove box from current box'
+        rmenu.append(men3)
+      } else if (type == 'Portion') {
+        let men1 = document.createElement('menu')
+        men1.setAttribute('onclick', 'removePortionfromBox()')
+        men1.innerText += 'Remove item portion from current box'
+        rmenu.append(men1)
+      }
+    
+      locator = document.getElementById('menu-storage-locator')
+      const location = document.getElementById('menustorage')
+      location.insertBefore(rmenu, locator.nextSibling)
+    
+      rmenu.style.display = 'block'
+      rmenu.style.left = document.getElementById('cords').getAttribute('x') - 10 + 'px'
+      rmenu.style.top = document.getElementById('cords').getAttribute('y') - 10 + 'px'
     }
     
     function handleMouseMove(event) {
@@ -210,7 +240,8 @@
     
       node
         .append('a')
-        .attr('onclick', (d) => "displayContextMenu('" + d.data.id.toString() + "','" + d.data.type.toString() + "')")
+        .attr('href', (d) => d.data.url)
+        .attr('oncontextmenu', (d) => "displayContextMenu('" + d.data.id.toString() + "','" + d.data.type.toString() + "','" + d.data.url + "')")
         .attr('class', 'tree-node-label')
         .append('text')
         .attr('dy', '0.31em')
