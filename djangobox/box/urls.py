@@ -1,6 +1,6 @@
 from django.urls import path
 
-from . import views
+from . import views, views_dashboard
 
 urlpatterns = [
     path("", views.index, name="index"),
@@ -19,5 +19,5 @@ urlpatterns = [
     path("accounts/profile/", views.profile, name="profile"),
     path("accounts/auth-signin/", views.AuthSignin.as_view(), name="signin"),
     path("accounts/logout/", views.user_logout_view, name="logout"),
-    path("func/get_tree_data/", views.get_tree_data, name="gettreedata"),
+    path("func/get_tree_data/", views_dashboard.get_tree_data, name="gettreedata"),
 ]
