@@ -1,3 +1,4 @@
+from django.utils import timezone
 import logging
 
 from django.conf import settings
@@ -183,8 +184,12 @@ class Loan(models.Model):
         validators=[MinValueValidator(0)], blank=True, default=0
     )
 
-    timestamp_borrow = models.DateTimeField()
-    timestamp_return = models.DateTimeField(null=True, blank=True)
+    timestamp_borrow = models.DateTimeField(auto_now_add=True)
+    timestamp_return = models.DateTimeField(
+        null=True,
+        blank=True,
+        editable=False,
+    )
 
     STATUS = (
         ("n", "None Returned"),
@@ -198,9 +203,10 @@ class Loan(models.Model):
         blank=True,
         default="n",
         help_text="Loan status",
+        editable=False,
     )
 
-    item = models.ForeignKey(ItemPortion, on_delete=models.CASCADE)
+    item = models.ForeignKey(ItemPortion, on_delete=models.SET_NULL, null=True)
     user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     class Meta:
@@ -213,24 +219,35 @@ class Loan(models.Model):
         """
         Override the save method to check constraints on qty and qty_returned.
         """
-
-        if self.qty > self.item.qty:
-            raise ValidationError("Requested quantity exceeds available quantity.")
-
         if self.qty_returned > self.qty:
             raise ValidationError("Returned quantity cannot exceed borrowed quantity.")
 
-        if self.pk:
+        if not self.pk:
+            if self.qty > self.item.qty:
+                raise ValidationError("Requested quantity exceeds available quantity.")
+
+            self.item.qty -= self.qty
+            self.item.save()
+
+        elif self.pk:
             previous_state = Loan.objects.get(pk=self.pk)
 
             if previous_state.status == "r":
                 raise ValidationError("Cannot modify a fully returned loan.")
+
+            if self.qty_returned == self.qty:
+                self.status = "r"
+            elif self.qty_returned < self.qty and self.qty_returned > 0:
+                self.status = "p"
+            elif self.qty_returned == 0:
+                self.status = "n"
 
             if self.status == "r":
                 if self.qty_returned != self.qty:
                     raise ValidationError(
                         "Must fully return the items before marking the loan as fully returned."
                     )
+                self.timestamp_return = timezone.now()
 
             if self.status == "p":
                 if self.qty_returned == 0:
@@ -252,11 +269,15 @@ class Loan(models.Model):
             self.item.qty += diff
             self.item.save()
 
-        else:
-            self.item.qty -= self.qty
-            self.item.save()
-
         super().save(*args, **kwargs)
+
+    def delete(self):
+        """overrides the save function"""
+        itemqtyleft = self.qty - self.qty_returned
+        self.item.qty += itemqtyleft
+        self.item.save()
+
+        super().delete()
 
     def get_absolute_url(self):
         return reverse("loan-detail", args=[str(self.id)])

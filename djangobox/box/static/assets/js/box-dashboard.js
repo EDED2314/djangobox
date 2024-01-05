@@ -6,17 +6,30 @@ document.oncontextmenu = function (event) {
     event.preventDefault()
     return false
 }
-// FIXME: Might want to delete/customize these things
-function addItem() {
-    console.log('addItem clicked')
+
+function addBoxInLocation(id) {
+    console.log('addBoxInLocation clicked')
 }
 
-function addBox() {
-    console.log('addBox clicked')
+function removeBoxfromLocation(id) {
+    console.log('removeBoxfromLocation clicked')
 }
 
-function removeBox() {
-    console.log('removeBox clicked')
+function addItemInBox(id) {
+    console.log('addItemInBox clicked')
+}
+
+
+function addBoxInBox(id) {
+    console.log('addBoxInBox clicked')
+}
+
+function removeBoxfromBox(id) {
+    console.log('removeBoxfromBox clicked')
+}
+
+function removePortionfromBox(id) {
+    console.log('removePortionfromBox clicked')
 }
 
 function closeMenu() {
@@ -38,24 +51,24 @@ function displayContextMenu(id, type, url) {
 
     if (type == 'Location') {
         let men1 = document.createElement('menu')
-        men1.setAttribute('onclick', 'addBoxInLocation()')
+        men1.setAttribute('onclick', "addBoxInLocation('" + id + "')")
         men1.innerText += 'Add box into current location'
         rmenu.append(men1)
         let men2 = document.createElement('menu')
-        men2.setAttribute('onclick', 'removeBoxfromLocation()')
+        men2.setAttribute('onclick', "removeBoxfromLocation()")
         men2.innerText += 'Remove box from current location'
         rmenu.append(men2)
     } else if (type == 'Box') {
         let men1 = document.createElement('menu')
-        men1.setAttribute('onclick', 'addItemInBox()')
+        men1.setAttribute('onclick', "addItemInBox()")
         men1.innerText += 'Add item portion into box'
         rmenu.append(men1)
         let men2 = document.createElement('menu')
-        men2.setAttribute('onclick', 'addBoxInBox()')
+        men2.setAttribute('onclick', "addBoxInBox()")
         men2.innerText += 'Add box into box'
         rmenu.append(men2)
         let men3 = document.createElement('menu')
-        men3.setAttribute('onclick', 'removeBoxfromBox()')
+        men3.setAttribute('onclick', "removeBoxfromBox()")
         men3.innerText += 'Remove box from current box'
         rmenu.append(men3)
     } else if (type == 'Portion') {
@@ -114,9 +127,9 @@ function renderTree(treeData) {
     var tree = d3.tree().size([newHeight, width])
     var treeData = tree(root)
 
-    var stroke = '#2181ff' // stroke for links
-    var strokeWidth = 1.5 // stroke width for links
-    var strokeOpacity = 0.4 // stroke opacity for links
+    var stroke = '#2181ff'
+    var strokeWidth = 1.5
+    var strokeOpacity = 0.4
 
     const nodes = treeData.descendants()
     nodes.forEach(function (d) {
