@@ -10,6 +10,8 @@ class LocationAdmin(ExportActionMixin, admin.ModelAdmin):
 
 class BoxAdmin(ExportActionMixin, admin.ModelAdmin):
     list_display = ("name", "location", "box")
+    list_filter = ["location"]
+    search_fields = ["name"]
 
 
 class ItemAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -21,6 +23,13 @@ class ItemAdmin(ExportActionMixin, admin.ModelAdmin):
         "upc",
         "unit",
     )
+    search_fields = (
+        "name",
+        "description",
+        "sku",
+        "mpn",
+        "upc",
+    )
 
 
 class ItemPortionAdmin(ExportActionMixin, admin.ModelAdmin):
@@ -30,6 +39,7 @@ class ItemPortionAdmin(ExportActionMixin, admin.ModelAdmin):
         "qty",
         "box",
     )
+    search_fields = ("item__name", "slug", "box__name")
 
 
 class LoanAdmin(ExportActionMixin, admin.ModelAdmin):

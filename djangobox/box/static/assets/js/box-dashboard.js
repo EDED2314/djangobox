@@ -2,10 +2,6 @@ document.onmousemove = handleMouseMove
 document.onclick = function (event) {
     closeMenu()
 }
-document.oncontextmenu = function (event) {
-    event.preventDefault()
-    return false
-}
 
 function addBoxInLocation(id) {
     console.log('addBoxInLocation clicked')
@@ -40,7 +36,8 @@ function closeMenu() {
     }
 }
 
-function displayContextMenu(id, type, url) {
+function displayContextMenu(event, id, type, url) {
+    event.preventDefault()
     closeMenu()
     console.log('displayContextMenu clicked')
     console.log(id, type, url)
@@ -170,7 +167,7 @@ function renderTree(treeData) {
     node
         .append('a')
         .attr('href', (d) => d.data.url)
-        .attr('oncontextmenu', (d) => "displayContextMenu('" + d.data.id.toString() + "','" + d.data.type.toString() + "','" + d.data.url + "')")
+        .attr('oncontextmenu', (d) => "displayContextMenu(event,'" + d.data.id.toString() + "','" + d.data.type.toString() + "','" + d.data.url + "')")
         .attr('class', 'tree-node-label')
         .append('text')
         .attr('dy', '0.31em')

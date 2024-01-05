@@ -1,10 +1,11 @@
 {% extends 'layouts/base.html' %}
 {% block content %}
   {% load static %}
+  {% load humanize %}
 
   <div class="content">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-8">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">List of loans</h4>
@@ -19,19 +20,42 @@
               <table class="table table-striped tablesorter" id="category-tbl">
                 <thead>
                   <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Address</th>
-                    <th class="text-center">Postcode</th>
+                    <th class="text-left">ID</th>
+                    <th class="text-left">Item Portion</th>
+                    <th class="text-left">User</th>
+                    <th class="text-left">Qty</th>
+                    <th class="text-left">Qty returned</th>
+                    <th class="text-left">Timestamp borrow</th>
+                    <th class="text-left">Timestamp return</th>
+                    <th class="text-left">Status</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for loan in loan_list %}
                     <tr>
-                      <td class="text-center">{{ loan.pk }}</td>
-                      <td class="text-center">{{ loan.name }}</td>
-                      <td class="text-center">{{ loan.address }}</td>
-                      <td class="text-center">{{ loan.postcode }}</td>
+                      <td class="text-left">{{ loan.pk }}</td>
+                      <td class="text-left">
+                        <a href="{{ loan.item.get_absolute_url }}">{{ loan.item.item.name|capfirst }}</a>
+                      </td>
+                      <td class="text-left">
+                        {% if loan.user.first_name == '' %}
+                          {{ loan.user.username }}<br />
+                          {{ loan.user.email }}
+                        {% else %}
+                          {{ loan.user.first_name|capfirst }}
+                          {{ loan.user.last_name|capfirst }}<br />
+                          {{ loan.user.email }}
+                        {% endif %}
+                      </td>
+                      <td class="text-left">{{ loan.qty }}</td>
+                      <td class="text-left">{{ loan.qty_returned }}</td>
+                      <td>
+                        {{ loan.timestamp_borrow|naturalday:'M d Y' }} {{ loan.timestamp_borrow|time:'g:i a' }}<br /> {{ loan.timestamp_borrow|naturaltime }}
+                      </td>
+                      <td>
+                        {{ loan.timestamp_return|naturalday:'M d Y' }} {{ loan.timestamp_return|time:'g:i a' }}<br /> {{ loan.timestamp_return|naturaltime }}
+                      </td>
+                      <td class="text-left">{{ loan.status }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -40,6 +64,7 @@
           </div>
         </div>
       </div>
+      <div class="col-4"></div>
     </div>
   </div>
 {% endblock %}

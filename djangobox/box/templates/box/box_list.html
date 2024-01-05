@@ -4,7 +4,7 @@
 
   <div class="content">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-8">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">List of boxes</h4>
@@ -19,19 +19,19 @@
               <table class="table table-striped tablesorter" id="category-tbl">
                 <thead>
                   <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Address</th>
-                    <th class="text-center">Postcode</th>
+                    <th class="text-left">ID</th>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Location</th>
+                    <th class="text-left">Box that this box is in</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for box in box_list %}
                     <tr>
-                      <td class="text-center">{{ box.pk }}</td>
-                      <td class="text-center">{{ box.name }}</td>
-                      <td class="text-center">{{ box.address }}</td>
-                      <td class="text-center">{{ box.postcode }}</td>
+                      <td class="text-left">{{ box.pk }}</td>
+                      <td class="text-left">{{ box.name }}</td>
+                      <td class="text-left">{{ box.location|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ box.box|default_if_none:'-' }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -40,6 +40,7 @@
           </div>
         </div>
       </div>
+      <div class="col-4"></div>
     </div>
   </div>
 {% endblock %}

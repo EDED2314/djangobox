@@ -4,7 +4,7 @@
 
   <div class="content">
     <div class="row">
-      <div class="col-md-12">
+      <div class="col-8">
         <div class="card">
           <div class="card-header">
             <h4 class="card-title">List of items</h4>
@@ -19,19 +19,25 @@
               <table class="table table-striped tablesorter" id="category-tbl">
                 <thead>
                   <tr>
-                    <th class="text-center">ID</th>
-                    <th class="text-center">Name</th>
-                    <th class="text-center">Address</th>
-                    <th class="text-center">Postcode</th>
+                    <th class="text-left">ID</th>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Description</th>
+                    <th class="text-left">Sku</th>
+                    <th class="text-left">Mpn</th>
+                    <th class="text-left">Upc</th>
+                    <th class="text-left">Unit</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for item in item_list %}
                     <tr>
-                      <td class="text-center">{{ item.pk }}</td>
-                      <td class="text-center">{{ item.name }}</td>
-                      <td class="text-center">{{ item.address }}</td>
-                      <td class="text-center">{{ item.postcode }}</td>
+                      <td class="text-left">{{ item.pk|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.name|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.description|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.sku|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.mpn|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.upc|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.unit|default_if_none:'-' }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
@@ -40,6 +46,7 @@
           </div>
         </div>
       </div>
+      <div class="col-4"></div>
     </div>
   </div>
 {% endblock %}
