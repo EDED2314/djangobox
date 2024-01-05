@@ -4,20 +4,39 @@
   <link href="{% static 'assets/css/box-dashboard.css' %}" rel="stylesheet" />
   <div class="content">
     <div class="row">
-      <div class="col-12">
+      <div class="col-8">
         <div class="card">
-          <div class="card-body">
-            <div class="card-header">
-              <div class="row">
-                <div class="col-sm-6 text-left">
-                  <h2 class="card-title">Location Tree View</h2>
-                  <select id="selectNode"></select>
-                </div>
-              </div>
+          <div class="card-header">
+            <div class="col-sm-6 text-left">
+              <h2 class="card-title">Location Tree View</h2>
+              <select id="selectNode"></select>
             </div>
+          </div>
+          <div class="card-body">
             <div class="svgrow" id="tree-div">
               <div id="tree-container"></div>
               <div id="tree-container-locator"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            <div class="col-sm-6 text-left">
+              <h2 class="card-title">Filters</h2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <div class="col-sm-6 text-left">
+              <h5 class="card-category">Click a label to view its</h5>
+              <h2 class="card-title">Details</h2>
             </div>
           </div>
         </div>

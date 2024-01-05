@@ -187,7 +187,7 @@ function renderTree(treeData) {
 
     d3.select('#tree-container')
         .select('svg')
-        .attr('width', bbox.width + 200)
+        .attr('width', bbox.width + 50)
         .attr('height', bbox.height + 100)
         .select('g')
         .attr('transform', 'translate(' + 300 + ',' + 0 + ')')
