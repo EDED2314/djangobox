@@ -7,6 +7,30 @@
       <p>Dashboard</p>
     </a>
   </li>
+  <li>
+    <a href="{% url 'locations' %}">
+      <i class="tim-icons icon-square-pin"></i>
+      <p>Locations</p>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'boxes' %}">
+      <i class="tim-icons icon-components"></i>
+      <p>Boxes</p>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'items' %}">
+      <i class="tim-icons icon-settings"></i>
+      <p>Items</p>
+    </a>
+  </li>
+  <li>
+    <a href="{% url 'loans' %}">
+      <i class="tim-icons icon-tag"></i>
+      <p>Loans</p>
+    </a>
+  </li>
 
   {% if not request.user.is_authenticated %}
     <li>
@@ -17,39 +41,6 @@
     </li>
   {% endif %}
 
-  {% admin_get_menu as app_list %}
-  {% if app_list %}
-    {% for app in app_list %}
-      {% if app.has_perms and not app.pinned %}
-        {% if app.models and app.app_label != 'auth' %}
-          <li class="{% if 'pages' in parent %}{% endif %}">
-            <a data-toggle="collapse" href="#dashboardBox">
-              <i class="tim-icons icon-app"></i>
-              <p>
-                Other Views
-                <b class="caret"></b>
-              </p>
-            </a>
-            <div class="collapse" id="dashboardBox">
-              <ul class="nav">
-                {% for model in app.models %}
-                  {% if model.url %}
-                    <li>
-                      <a href="{{ model.url }}"><span class="sidebar-mini-icon">L</span><span class="sidebar-normal">{{ model.label }}</span></a>
-                    </li>
-                  {% else %}
-                    <li class="">{{ model.label }}</li>
-                  {% endif %}
-                {% endfor %}
-              </ul>
-            </div>
-          </li>
-        {% endif %}
-      {% endif %}
-    {% endfor %}
-  {% endif %}
-
- 
   {% if request.user.is_authenticated %}
     <li>
       <a href="{% url 'profile' %}">
@@ -65,5 +56,3 @@
     </li>
   {% endif %}
 </ul>
-
-

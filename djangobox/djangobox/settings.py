@@ -54,7 +54,6 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    "box.apps.BoxConfig",
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -63,6 +62,7 @@ INSTALLED_APPS = [
     "django.contrib.staticfiles",
     "django.contrib.humanize",
     "import_export",
+    "box.apps.BoxConfig",
 ]
 
 MIDDLEWARE = [

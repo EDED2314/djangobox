@@ -7,9 +7,6 @@ function addBoxInLocation(id) {
     console.log('addBoxInLocation clicked')
 }
 
-function removeBoxfromLocation(id) {
-    console.log('removeBoxfromLocation clicked')
-}
 
 function addItemInBox(id) {
     console.log('addItemInBox clicked')
@@ -20,7 +17,7 @@ function addBoxInBox(id) {
     console.log('addBoxInBox clicked')
 }
 
-function removeBoxfromBox(id) {
+function removeBoxfromPos(id) {
     console.log('removeBoxfromBox clicked')
 }
 
@@ -51,10 +48,6 @@ function displayContextMenu(event, id, type, url) {
         men1.setAttribute('onclick', "addBoxInLocation('" + id + "')")
         men1.innerText += 'Add box into current location'
         rmenu.append(men1)
-        let men2 = document.createElement('menu')
-        men2.setAttribute('onclick', "removeBoxfromLocation()")
-        men2.innerText += 'Remove box from current location'
-        rmenu.append(men2)
     } else if (type == 'Box') {
         let men1 = document.createElement('menu')
         men1.setAttribute('onclick', "addItemInBox()")
@@ -65,8 +58,8 @@ function displayContextMenu(event, id, type, url) {
         men2.innerText += 'Add box into box'
         rmenu.append(men2)
         let men3 = document.createElement('menu')
-        men3.setAttribute('onclick', "removeBoxfromBox()")
-        men3.innerText += 'Remove box from current box'
+        men3.setAttribute('onclick', "removeBoxfromPos()")
+        men3.innerText += 'Remove box from current position in tree'
         rmenu.append(men3)
     } else if (type == 'Portion') {
         let men1 = document.createElement('menu')
