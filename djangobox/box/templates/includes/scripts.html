@@ -12,3 +12,11 @@
 <script src="{% static 'assets/js/black-dashboard.min.js' %}?v=1.0.0"></script>
 
 <script src="{% static 'assets/js/themeSettings.js' %}"></script>
+
+<script>
+  var div = document.getElementById('dashboardBox')
+  const currentUrl = window.location.href
+  if (currentUrl.includes('/admin/')) {
+    div.classList.toggle('show')
+  }
+</script>

@@ -7,30 +7,6 @@
       <p>Dashboard</p>
     </a>
   </li>
-  <li>
-    <a href="{% url 'locations' %}">
-      <i class="tim-icons icon-square-pin"></i>
-      <p>Locations</p>
-    </a>
-  </li>
-  <li>
-    <a href="{% url 'boxes' %}">
-      <i class="tim-icons icon-components"></i>
-      <p>Boxes</p>
-    </a>
-  </li>
-  <li>
-    <a href="{% url 'items' %}">
-      <i class="tim-icons icon-settings"></i>
-      <p>Items</p>
-    </a>
-  </li>
-  <li>
-    <a href="{% url 'loans' %}">
-      <i class="tim-icons icon-tag"></i>
-      <p>Loans</p>
-    </a>
-  </li>
 
   {% if not request.user.is_authenticated %}
     <li>
@@ -73,14 +49,7 @@
     {% endfor %}
   {% endif %}
 
-  {% if request.user.is_superuser %}
-    <li>
-      <a href="{% url 'admin:login' %}">
-        <i class="tim-icons icon-settings-gear-63"></i>
-        <p>Admin Page</p>
-      </a>
-    </li>
-  {% endif %}
+ 
   {% if request.user.is_authenticated %}
     <li>
       <a href="{% url 'profile' %}">
@@ -96,3 +65,5 @@
     </li>
   {% endif %}
 </ul>
+
+
