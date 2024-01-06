@@ -64,6 +64,8 @@ class Box(models.Model):
 
     slug = ShortUUIDField(auto=True)
     name = models.CharField(max_length=200)
+    created_at = models.DateTimeField(auto_now_add=True)
+
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, related_name="boxes", blank=True, null=True
     )

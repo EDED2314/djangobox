@@ -39,7 +39,7 @@ class BoxListView(generic.ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        query_set = Box.objects.get_queryset().order_by()
+        query_set = Box.objects.get_queryset().order_by("-created_at")
         return query_set
 
 
@@ -52,7 +52,7 @@ class ItemListView(generic.ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        query_set = Item.objects.get_queryset().order_by("name")
+        query_set = Item.objects.get_queryset().order_by("-name")
         return query_set
 
     def get_context_data(self, **kwargs):
@@ -74,7 +74,7 @@ class LoanListView(generic.ListView):
     paginate_by = 15
 
     def get_queryset(self):
-        query_set = Loan.objects.get_queryset().order_by()
+        query_set = Loan.objects.get_queryset().order_by("-timestamp_borrow")
         return query_set
 
 

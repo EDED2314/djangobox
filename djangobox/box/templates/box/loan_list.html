@@ -63,7 +63,7 @@
                       <td>
                         {{ loan.timestamp_return|naturalday:'M d Y' }} {{ loan.timestamp_return|time:'g:i a' }}<br /> {{ loan.timestamp_return|naturaltime }}
                       </td>
-                      <td class="text-left">{{ loan.status }}</td>
+                      <td class="text-left">{{ loan.get_status_display }}</td>
                     </tr>
                   {% endfor %}
                 </tbody>
