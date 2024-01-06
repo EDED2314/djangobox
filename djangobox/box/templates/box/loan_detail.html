@@ -1,0 +1,69 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+  <div class="content">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Item Portion's Item's Name: {{ itemportion.item.name }}</h4>
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <table class="table table-striped tablesorter" id="category-tbl">
+                <tr>
+                  <th class="text-left">ID</th>
+                  <td class="text-left">{{ loan.pk }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Item Portion it is Loaning</th>
+                  <td class="text-left">
+                    <a href="{{ loan.item.get_absolute_url }}">{{ loan.item.item.name|capfirst }}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-left">User</th>
+                  <td class="text-left">
+                    {% if loan.user.first_name == '' %}
+                      {{ loan.user.username }}<br />
+                      {{ loan.user.email }}
+                    {% else %}
+                      {{ loan.user.first_name|capfirst }}
+                      {{ loan.user.last_name|capfirst }}<br />
+                      {{ loan.user.email }}
+                    {% endif %}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-left">Qty</th>
+                  <td class="text-left">{{ loan.qty }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Qty returned</th>
+                  <td class="text-left">{{ loan.qty_returned }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Timestamp borrow</th>
+                  <td>
+                    {{ loan.timestamp_borrow|naturalday:'M d Y' }} {{ loan.timestamp_borrow|time:'g:i a' }}<br /> {{ loan.timestamp_borrow|naturaltime }}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-left">Timestamp return</th>
+                  <td>
+                    {{ loan.timestamp_return|naturalday:'M d Y' }} {{ loan.timestamp_return|time:'g:i a' }}<br /> {{ loan.timestamp_return|naturaltime }}
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-left">Status</th>
+                  <td class="text-left">{{ loan.get_status_display }}</td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

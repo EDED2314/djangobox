@@ -1,7 +1,6 @@
 {% extends 'layouts/base.html' %}
+{% load static %}
 {% block content %}
-  {% load static %}
-
   <div class="content">
     <div class="row">
       <div class="col-12">
@@ -35,18 +34,32 @@
                     <th class="text-left">Mpn</th>
                     <th class="text-left">Upc</th>
                     <th class="text-left">Unit</th>
+                    <th class="text-left">Total Qty</th>
+                    <th class="text-left">Item's Portions' Locations</th>
                   </tr>
                 </thead>
                 <tbody>
                   {% for item in item_list %}
                     <tr>
                       <td class="text-left">{{ item.pk|default_if_none:'-' }}</td>
-                      <td class="text-left">{{ item.name|default_if_none:'-' }}</td>
+                      <td class="text-left">
+                        <a href="{{ item.get_absolute_url }}">{{ item.name }}</a>
+                      </td>
                       <td class="text-left">{{ item.description|default_if_none:'-' }}</td>
                       <td class="text-left">{{ item.sku|default_if_none:'-' }}</td>
                       <td class="text-left">{{ item.mpn|default_if_none:'-' }}</td>
                       <td class="text-left">{{ item.upc|default_if_none:'-' }}</td>
                       <td class="text-left">{{ item.unit|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ item.total_quantity|default_if_none:'-' }}</td>
+                      <td>
+                        <ul>
+                          {% for itemportion in item.portions.all %}
+                            <li class="text-left">
+                              <a href="{{ itemportion.box.get_absolute_url }}">{{ itemportion.box.name }}</a>
+                            </li>
+                          {% endfor %}
+                        </ul>
+                      </td>
                     </tr>
                   {% endfor %}
                 </tbody>

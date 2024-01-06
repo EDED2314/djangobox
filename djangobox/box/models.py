@@ -206,8 +206,15 @@ class Loan(models.Model):
         editable=False,
     )
 
-    item = models.ForeignKey(ItemPortion, on_delete=models.SET_NULL, null=True)
-    user = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
+    item = models.ForeignKey(
+        ItemPortion, on_delete=models.SET_NULL, related_name="loans", null=True
+    )
+    user = models.ForeignKey(
+        User,
+        on_delete=models.SET_NULL,
+        related_name="loans",
+        null=True,
+    )
 
     class Meta:
         ordering = ["timestamp_borrow"]

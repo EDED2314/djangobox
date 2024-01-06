@@ -1,1 +1,75 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
 
+{% block content %}
+  <div class="content">
+    <div class="row">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Box: {{ box.name }}</h4>
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <table class="table table-striped tablesorter" id="category-tbl">
+                <tr>
+                  <th class="text-left">ID</th>
+                  <td class="text-left">{{ box.pk|default_if_none:'-' }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Name</th>
+                  <td class="text-left">{{ box.name|default_if_none:'-' }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Location</th>
+                  <td class="text-left">
+                    <a href="{{ box.location.get_absolute_url }}">{{ box.location|default_if_none:'-' }}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-left">Box that this box is in</th>
+                  <td class="text-left">
+                    <a href="{{ box.box.get_absolute_url }}">{{ box.box|default_if_none:'-' }}</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Item Portions within this box</h4>
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <table class="table table-striped tablesorter" id="category-tbl">
+                <thead>
+                  <tr>
+                    <th class="text-left">Portion ID</th>
+                    <th class="text-left">Name</th>
+                    <th class="text-left">Qty</th>
+                    <th class="text-left">Unit</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for itemportion in box.items.all %}
+                    <tr>
+                      <td class="text-left">{{ itemportion.slug|default_if_none:'-' }}</td>
+                      <td class="text-left">
+                        <a href="{{ itemportion.item.get_absolute_url }}">{{ itemportion.item.name }}</a>
+                      </td>
+                      <td class="text-left">{{ itemportion.qty|default_if_none:'-' }}</td>
+                      <td class="text-left">{{ itemportion.item.unit|default_if_none:'-' }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

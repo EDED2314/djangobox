@@ -1,0 +1,104 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% load humanize %}
+{% block content %}
+  <div class="content">
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Item Portion's Item's Name: {{ itemportion.item.name }}</h4>
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <table class="table table-striped tablesorter" id="category-tbl">
+                <tr>
+                  <th class="text-left">Portion pk</th>
+                  <td class="text-left">{{ itemportion.pk|default_if_none:'-' }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Portion ID</th>
+                  <td class="text-left">{{ itemportion.slug|default_if_none:'-' }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Qty</th>
+                  <td class="text-left">{{ itemportion.qty|default_if_none:'-' }}</td>
+                </tr>
+                <tr>
+                  <th class="text-left">Portion-ed Item</th>
+                  <td class="text-left">
+                    <a href="{{ itemportion.item.get_absolute_url }}">{{ itemportion.item.name }}</a>
+                  </td>
+                </tr>
+                <tr>
+                  <th class="text-left">Box it is stored in</th>
+                  <td class="text-left">
+                    <a href="{{ itemportion.box.get_absolute_url }}">{{ itemportion.box.name }}</a>
+                  </td>
+                </tr>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
+            <h4 class="card-title">Loan history of this Item Portion</h4>
+          </div>
+          <div class="card-body">
+            <div class="container-fluid">
+              <table class="table table-striped tablesorter" id="category-tbl">
+                <thead>
+                  <tr>
+                    <th class="text-left">ID</th>
+                    <th class="text-left">Item Portion</th>
+                    <th class="text-left">User</th>
+                    <th class="text-left">Qty</th>
+                    <th class="text-left">Qty returned</th>
+                    <th class="text-left">Timestamp borrow</th>
+                    <th class="text-left">Timestamp return</th>
+                    <th class="text-left">Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {% for loan in itemportion.loans.all %}
+                    <tr>
+                      <td class="text-left">
+                        <a href="{{ loan.get_absolute_url }}">{{ loan.pk }}</a>
+                      </td>
+                      <td class="text-left">
+                        <a href="{{ loan.item.get_absolute_url }}">{{ loan.item.item.name|capfirst }}</a>
+                      </td>
+                      <td class="text-left">
+                        {% if loan.user.first_name == '' %}
+                          {{ loan.user.username }}<br />
+                          {{ loan.user.email }}
+                        {% else %}
+                          {{ loan.user.first_name|capfirst }}
+                          {{ loan.user.last_name|capfirst }}<br />
+                          {{ loan.user.email }}
+                        {% endif %}
+                      </td>
+                      <td class="text-left">{{ loan.qty }}</td>
+                      <td class="text-left">{{ loan.qty_returned }}</td>
+                      <td>
+                        {{ loan.timestamp_borrow|naturalday:'M d Y' }} {{ loan.timestamp_borrow|time:'g:i a' }}<br /> {{ loan.timestamp_borrow|naturaltime }}
+                      </td>
+                      <td>
+                        {{ loan.timestamp_return|naturalday:'M d Y' }} {{ loan.timestamp_return|time:'g:i a' }}<br /> {{ loan.timestamp_return|naturaltime }}
+                      </td>
+                      <td class="text-left">{{ loan.get_status_display }}</td>
+                    </tr>
+                  {% endfor %}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}

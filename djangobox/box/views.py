@@ -6,6 +6,7 @@ from django.contrib.auth import logout
 
 from .models import Location, Box, Item, Loan, ItemPortion
 from .forms import LoginForm
+from django.db.models import Sum
 
 
 def index(request):
@@ -45,6 +46,15 @@ class BoxView(generic.DetailView):
 class ItemListView(generic.ListView):
     model = Item
     paginate_by = 15
+
+    def get_context_data(self, **kwargs):
+        context = super(ItemListView, self).get_context_data(**kwargs)
+        items_with_total_quantity = Item.objects.annotate(
+            total_quantity=Sum("portions__qty")
+        )
+
+        context["item_list"] = items_with_total_quantity
+        return context
 
 
 class ItemView(generic.DetailView):
