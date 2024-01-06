@@ -8,6 +8,15 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
+            <a href="/admin/box/loan"><h4 class="card-title">Are your an admin? - Click me to view the respective admin page</h4></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
             <h4 class="card-title">List of loans</h4>
             {% if loan_list %}
               <p class="category">This is where you see all loans</p>
@@ -64,6 +73,17 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="pagination">
+      <span class="page-links">
+        {% if page_obj.has_previous %}
+          <a href="{% url 'loans' %}?search={{ search }}&page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+        {% if page_obj.has_next %}
+          <a href="{% url 'loans' %}?search={{ search }}&page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+      </span>
     </div>
   </div>
 {% endblock %}

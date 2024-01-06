@@ -3,6 +3,15 @@ document.onclick = function (event) {
     closeMenu()
 }
 
+function popitup(url) {
+    newwindow = window.open(url, 'name', 'height=200,width=150');
+    if (!newindow) {
+        alert('We have detected that you are using popup blocking software...');
+    }
+    if (window.focus) { newwindow.focus() }
+    return false;
+}
+
 function addBoxInLocation(id) {
     console.log('addBoxInLocation clicked')
 }

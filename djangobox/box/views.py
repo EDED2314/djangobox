@@ -31,11 +31,11 @@ def user_logout_view(request):
 
 class LocationListView(generic.ListView):
     model = Location
-    context_object_name = "location_list"
 
 
 class BoxListView(generic.ListView):
     model = Box
+    paginate_by = 15
 
 
 class BoxView(generic.DetailView):
@@ -44,6 +44,7 @@ class BoxView(generic.DetailView):
 
 class ItemListView(generic.ListView):
     model = Item
+    paginate_by = 15
 
 
 class ItemView(generic.DetailView):
@@ -52,6 +53,7 @@ class ItemView(generic.DetailView):
 
 class LoanListView(generic.ListView):
     model = Loan
+    paginate_by = 15
 
 
 class LoanView(generic.DetailView):

@@ -7,9 +7,18 @@
       <div class="col-12">
         <div class="card">
           <div class="card-header">
+            <a href="/admin/box/box"><h4 class="card-title">Are your an admin? - Click me to view the respective admin page</h4></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12">
+        <div class="card">
+          <div class="card-header">
             <h4 class="card-title">List of boxes</h4>
             {% if box_list %}
-              <p class="category">This is where you see all boxes</p>
+              <p class="category">This is where you see all your boxes</p>
             {% else %}
               <p class="category">There are no boxes in the database</p>
             {% endif %}
@@ -40,6 +49,17 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="pagination">
+      <span class="page-links">
+        {% if page_obj.has_previous %}
+          <a href="{% url 'boxes' %}?search={{ search }}&page={{ page_obj.previous_page_number }}">previous</a>
+        {% endif %}
+        <span class="page-current">Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}.</span>
+        {% if page_obj.has_next %}
+          <a href="{% url 'boxes' %}?search={{ search }}&page={{ page_obj.next_page_number }}">next</a>
+        {% endif %}
+      </span>
     </div>
   </div>
 {% endblock %}

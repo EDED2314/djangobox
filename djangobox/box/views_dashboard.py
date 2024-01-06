@@ -19,7 +19,7 @@ def get_sub_box_data(box):
             "size": portion.qty,
             "url": portion.get_absolute_url(),
             "type": "Portion",
-            "id": portion.slug,
+            "id": portion.pk,
         }
         box_data["children"].append(portion_data)
 
