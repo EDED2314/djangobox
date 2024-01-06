@@ -67,7 +67,7 @@
                   {% for loan in itemportion.loans.all %}
                     <tr>
                       <td class="text-left">
-                        <a href="{{ loan.get_absolute_url }}">{{ loan.pk }}</a>
+                        <a href="{{ loan.get_absolute_url }}">{{ loan.slug }}</a>
                       </td>
                       <td class="text-left">
                         <a href="{{ loan.item.get_absolute_url }}">{{ loan.item.item.name|capfirst }}</a>

@@ -35,7 +35,7 @@ class ModelTests(TestCase):
         self.assertEqual(list(self.box2.subboxes.all()), [self.box1])
 
     def test_box_absolute_url(self):
-        url = reverse("box-detail", args=[str(self.box1.id)])
+        url = reverse("box-detail", args=[str(self.box1.slug)])
         self.assertEqual(self.box1.get_absolute_url(), url)
 
     def test_item_absolute_url(self):

@@ -62,6 +62,7 @@ class Box(models.Model):
     `item_portions_in_this_box = box.items.all()`
     """
 
+    slug = ShortUUIDField(auto=True)
     name = models.CharField(max_length=200)
     location = models.ForeignKey(
         Location, on_delete=models.CASCADE, related_name="boxes", blank=True, null=True
@@ -69,7 +70,6 @@ class Box(models.Model):
     box = models.ForeignKey(
         "Box", on_delete=models.SET_NULL, related_name="subboxes", blank=True, null=True
     )
-    slug = ShortUUIDField(auto=True)
 
     def __str__(self):
         return self.name
@@ -124,9 +124,9 @@ class Item(models.Model):
 class ItemPortion(models.Model):
     """A portion/physical manifestation of an item."""
 
+    slug = ShortUUIDField(auto=True)
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
     qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    slug = ShortUUIDField(auto=True)
 
     box = models.ForeignKey(
         Box, on_delete=models.SET_NULL, related_name="items", null=True
@@ -180,6 +180,7 @@ class ItemPortion(models.Model):
 class Loan(models.Model):
     """A borrowed/returned instance that tracks item loans + transactions"""
 
+    slug = ShortUUIDField(auto=True)
     qty = models.IntegerField(validators=[MinValueValidator(1)])
     qty_returned = models.IntegerField(
         validators=[MinValueValidator(0)], blank=True, default=0

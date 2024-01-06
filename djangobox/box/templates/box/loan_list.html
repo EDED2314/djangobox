@@ -41,7 +41,7 @@
                 <tbody>
                   {% for loan in loan_list %}
                     <tr>
-                      <td class="text-left">{{ loan.pk }}</td>
+                      <td class="text-left">{{ loan.slug }}</td>
                       <td class="text-left">
                         <a href="{{ loan.item.get_absolute_url }}">{{ loan.item.item.name|capfirst }}</a>
                       </td>
