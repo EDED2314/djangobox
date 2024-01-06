@@ -4,11 +4,12 @@ document.onclick = function (event) {
 }
 
 function popitup(url) {
-    newwindow = window.open(url, 'name', 'height=200,width=150');
+    newwindow = window.open(url, 'name', 'height=500,width=800');
     if (!newindow) {
         alert('We have detected that you are using popup blocking software...');
     }
     if (window.focus) { newwindow.focus() }
+
     return false;
 }
 
@@ -168,7 +169,8 @@ function renderTree(treeData) {
 
     node
         .append('a')
-        .attr('href', (d) => d.data.url)
+        .attr('onclick', (d) => "popitup('" + d.data.url + "')")
+        //.attr('href', (d) => d.data.url)
         .attr('oncontextmenu', (d) => "displayContextMenu(event,'" + d.data.id.toString() + "','" + d.data.type.toString() + "','" + d.data.url + "')")
         .attr('class', 'tree-node-label')
         .append('text')
