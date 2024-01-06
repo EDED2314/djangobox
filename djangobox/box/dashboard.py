@@ -63,8 +63,12 @@ def box_selector(request, targetId, type):
         pass
     elif type == "Box":
         pass
-    return render(
-        request,
-        "actions/boxselector.html",
-        {"box_list": allboxes, "targetId": targetId},
-    )
+
+    if request.user.is_superuser:
+        return render(
+            request,
+            "actions/boxselector.html",
+            {"box_list": allboxes, "targetId": targetId},
+        )
+    else:
+        return render(request, "pages/dashboard.html")

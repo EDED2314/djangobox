@@ -1,7 +1,7 @@
 
 
-function popitup(url) {
-    newwindow = window.open(url, 'name', 'height=500,width=800');
+function popitup(url, name) {
+    newwindow = window.open(url, name, 'height=500,width=800');
     if (!newindow) {
         alert('We have detected that you are using popup blocking software...');
     }
@@ -12,7 +12,7 @@ function popitup(url) {
 
 function addBox(id, type) {
     console.log('addBox clicked')
-    popitup("func/box_selector/" + id + "/" + type)
+    popitup("func/box_selector/" + id + "/" + type, "Select a Box")
 }
 
 
