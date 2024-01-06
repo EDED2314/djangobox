@@ -38,6 +38,10 @@ class BoxListView(generic.ListView):
     model = Box
     paginate_by = 15
 
+    def get_queryset(self):
+        query_set = Box.objects.get_queryset().order_by()
+        return query_set
+
 
 class BoxView(generic.DetailView):
     model = Box
@@ -46,6 +50,10 @@ class BoxView(generic.DetailView):
 class ItemListView(generic.ListView):
     model = Item
     paginate_by = 15
+
+    def get_queryset(self):
+        query_set = Item.objects.get_queryset().order_by("name")
+        return query_set
 
     def get_context_data(self, **kwargs):
         context = super(ItemListView, self).get_context_data(**kwargs)
@@ -64,6 +72,10 @@ class ItemView(generic.DetailView):
 class LoanListView(generic.ListView):
     model = Loan
     paginate_by = 15
+
+    def get_queryset(self):
+        query_set = Loan.objects.get_queryset().order_by()
+        return query_set
 
 
 class LoanView(generic.DetailView):
