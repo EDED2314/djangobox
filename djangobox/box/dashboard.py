@@ -1,5 +1,6 @@
 from django.http import JsonResponse
-from .models import Location
+from .models import Location, Box
+from django.shortcuts import render
 
 
 def get_sub_box_data(box):
@@ -53,3 +54,16 @@ def get_tree_data(request):
         tree_data.append(location_data)
 
     return JsonResponse(tree_data, safe=False)
+
+
+def box_selector(request, targetId, type):
+    allboxes = Box.objects.all()
+    if type == "Location":
+        pass
+    elif type == "Box":
+        pass
+    return render(
+        request,
+        "actions/boxselector.html",
+        {"box_list": allboxes, "targetId": targetId},
+    )

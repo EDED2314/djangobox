@@ -10,7 +10,7 @@ from django.db.models import Sum
 
 
 def index(request):
-    return render(request, "pages/dashboard.html")
+    return render(request, "pages/dashboard.html", {"user": request.user})
 
 
 class AuthSignin(auth_views.LoginView):

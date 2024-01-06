@@ -41,4 +41,14 @@
 {% block extrascripts %}
   <script src="https://d3js.org/d3.v5.min.js"></script>
   <script src="{% static 'assets/js/box-dashboard.js' %}"></script>
+  <script>
+    document.onmousemove = handleMouseMove
+    document.onclick = function (event) {
+      closeMenu()
+    }
+    var is_staff = {{ request.user.is_staff|yesno:"true,false" }}
+    if (!is_staff) {
+      displayContextMenu = function () {}
+    }
+  </script>
 {% endblock %}

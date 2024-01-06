@@ -1,0 +1,40 @@
+{% extends 'layouts/base.html' %}
+{% load static %}
+{% block content %}
+  <div class="content">
+    <h1>Box List</h1>
+
+    <!-- Search Input -->
+    <label for="searchInput">Search Box:</label>
+    <input type="text" id="searchInput" onkeyup="filterBoxes()" placeholder="Type to search..." />
+
+    <!-- Box List -->
+    <ul id="boxList">
+      {% for box in box_list %}
+        <li>{{ box.name }}</li>
+      {% endfor %}
+    </ul>
+  </div>
+  <script>
+    function filterBoxes() {
+      // Get input value and convert to lowercase for case-insensitive search
+      var input = document.getElementById('searchInput').value.toLowerCase()
+    
+      // Get the list of box items
+      var boxList = document.getElementById('boxList')
+    
+      // Get all list items in the boxList
+      var boxes = boxList.getElementsByTagName('li')
+    
+      // Loop through all list items, and hide those who don't match the search query
+      for (var i = 0; i < boxes.length; i++) {
+        var boxName = boxes[i].textContent.toLowerCase()
+        if (boxName.indexOf(input) > -1) {
+          boxes[i].style.display = ''
+        } else {
+          boxes[i].style.display = 'none'
+        }
+      }
+    }
+  </script>
+{% endblock %}

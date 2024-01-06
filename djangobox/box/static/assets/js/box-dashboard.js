@@ -1,7 +1,4 @@
-document.onmousemove = handleMouseMove
-document.onclick = function (event) {
-    closeMenu()
-}
+
 
 function popitup(url) {
     newwindow = window.open(url, 'name', 'height=500,width=800');
@@ -13,8 +10,9 @@ function popitup(url) {
     return false;
 }
 
-function addBoxInLocation(id) {
-    console.log('addBoxInLocation clicked')
+function addBox(id, type) {
+    console.log('addBox clicked')
+    popitup("func/box_selector/" + id + "/" + type)
 }
 
 
@@ -22,10 +20,6 @@ function addItemInBox(id) {
     console.log('addItemInBox clicked')
 }
 
-
-function addBoxInBox(id) {
-    console.log('addBoxInBox clicked')
-}
 
 function removeBoxfromPos(id) {
     console.log('removeBoxfromBox clicked')
@@ -55,7 +49,7 @@ function displayContextMenu(event, id, type, url) {
 
     if (type == 'Location') {
         let men1 = document.createElement('menu')
-        men1.setAttribute('onclick', "addBoxInLocation('" + id + "')")
+        men1.setAttribute('onclick', "addBox('" + id + "','" + type + "')")
         men1.innerText += 'Add box into current location'
         rmenu.append(men1)
     } else if (type == 'Box') {
@@ -64,7 +58,7 @@ function displayContextMenu(event, id, type, url) {
         men1.innerText += 'Add item portion into box'
         rmenu.append(men1)
         let men2 = document.createElement('menu')
-        men2.setAttribute('onclick', "addBoxInBox()")
+        men2.setAttribute('onclick', "addBox()")
         men2.innerText += 'Add box into box'
         rmenu.append(men2)
         let men3 = document.createElement('menu')

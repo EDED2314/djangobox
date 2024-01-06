@@ -20,4 +20,9 @@ urlpatterns = [
     path("accounts/auth-signin/", views.AuthSignin.as_view(), name="signin"),
     path("accounts/logout/", views.user_logout_view, name="logout"),
     path("func/get_tree_data/", dashboard.get_tree_data, name="gettreedata"),
+    path(
+        "func/box_selector/<int:targetId>/<str:type>",
+        dashboard.box_selector,
+        name="boxselector",
+    ),
 ]
