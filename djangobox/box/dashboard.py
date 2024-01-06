@@ -1,6 +1,6 @@
 from django.http import JsonResponse
 from .models import Location, Box
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 
 
 def get_sub_box_data(box):
@@ -71,4 +71,4 @@ def box_selector(request, targetId, type):
             {"box_list": allboxes, "targetId": targetId},
         )
     else:
-        return render(request, "pages/dashboard.html")
+        return redirect("index")
