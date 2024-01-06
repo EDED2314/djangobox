@@ -36,7 +36,7 @@
                 <tbody>
                   {% for box in box_list %}
                     <tr>
-                      <td class="text-left">{{ box.pk }}</td>
+                      <td class="text-left">{{ box.slug }}</td>
                       <td class="text-left">
                         <a href="{{ box.get_absolute_url }}">{{ box.name|capfirst }}</a>
                       </td>

@@ -9,7 +9,12 @@ class LocationAdmin(ExportActionMixin, admin.ModelAdmin):
 
 
 class BoxAdmin(ExportActionMixin, admin.ModelAdmin):
-    list_display = ("name", "location", "box")
+    list_display = (
+        "name",
+        "slug",
+        "location",
+        "box",
+    )
     list_filter = ["location"]
     search_fields = ["name"]
 

@@ -56,6 +56,7 @@ def get_tree_data(request):
     return JsonResponse(tree_data, safe=False)
 
 
+# TODO finish this
 def box_selector(request, targetId, type):
     allboxes = Box.objects.all()
     if type == "Location":

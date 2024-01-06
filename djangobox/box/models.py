@@ -69,12 +69,13 @@ class Box(models.Model):
     box = models.ForeignKey(
         "Box", on_delete=models.SET_NULL, related_name="subboxes", blank=True, null=True
     )
+    slug = ShortUUIDField(auto=True)
 
     def __str__(self):
         return self.name
 
     def get_absolute_url(self):
-        return reverse("box-detail", args=[str(self.id)])
+        return reverse("box-detail", args=[str(self.slug)])
 
     def clean(self):
         """
@@ -125,7 +126,7 @@ class ItemPortion(models.Model):
 
     item = models.ForeignKey(Item, on_delete=models.CASCADE, related_name="portions")
     qty = models.IntegerField(default=0, validators=[MinValueValidator(0)])
-    slug = ShortUUIDField()
+    slug = ShortUUIDField(auto=True)
 
     box = models.ForeignKey(
         Box, on_delete=models.SET_NULL, related_name="items", null=True

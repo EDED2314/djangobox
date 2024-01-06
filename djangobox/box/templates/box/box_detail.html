@@ -14,7 +14,7 @@
               <table class="table table-striped tablesorter" id="category-tbl">
                 <tr>
                   <th class="text-left">ID</th>
-                  <td class="text-left">{{ box.pk|default_if_none:'-' }}</td>
+                  <td class="text-left">{{ box.slug|default_if_none:'-' }}</td>
                 </tr>
                 <tr>
                   <th class="text-left">Name</th>

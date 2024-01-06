@@ -31,7 +31,14 @@
       <p>Loans</p>
     </a>
   </li>
-
+  {% if not request.user.is_super_user %}
+    <li>
+      <a href="/admin/">
+        <i class="tim-icons icon-settings-gear-63"></i>
+        <p>Admin Page</p>
+      </a>
+    </li>
+  {% endif %}
   {% if not request.user.is_authenticated %}
     <li>
       <a href="{% url 'signin' %}">
